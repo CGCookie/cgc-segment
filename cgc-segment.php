@@ -17,11 +17,10 @@ class cgcSegment {
 
 		class_alias('Segment', 'Analytics');
 		Analytics::init("jOMIQl4Nqe4zzkUNITBHlyKKVixnTpTl");
-		add_action( 'edd_post_add_to_cart', array($this,'to_cart'), 10, 2 );
+		add_action( 'edd_post_add_to_cart', array($this,'add_product_to_cart'), 10, 2 );
 	}
 
-	function to_cart( $download_id, $options ) {
-
+	function identify_user() {
 		$user_id = get_current_user_id();
 		$user = get_userdata( $user_id );
 
@@ -33,7 +32,12 @@ class cgcSegment {
 		    "email" => $user->user_email,
 		  )
 		));
+		return $user_id;
+	}
 
+	function add_product_to_cart( $download_id, $options ) {
+
+		$user_id = self::identify_user();
 		Analytics::track(array(
 		  "userId" => $user_id,
 		  "event" => "Added Product to Cart",
@@ -43,7 +47,7 @@ class cgcSegment {
 		  )
 		));
 
-		}
+	}
 
 }
 new cgcSegment;
