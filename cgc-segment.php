@@ -19,6 +19,8 @@ class cgcSegment {
 		Analytics::init("jOMIQl4Nqe4zzkUNITBHlyKKVixnTpTl");
 		add_action( 'edd_post_add_to_cart', array($this,'track_add_product_to_cart'), 10, 2 );
 		add_action( 'edd_remove', array($this, 'track_remove_product_from_cart'), 10, 2);
+
+		add_action( 'edd_complete_purchase', array($this, 'track_purchase'), 10, 3 );
 	}
 
 	function identify_user() {
@@ -75,7 +77,31 @@ class cgcSegment {
 	/*
 		Purchase Functions
 	*/
-	// function track_purchase_products()
+	function track_purchase( $download_id, $payment_id, $download_type ) {
+		$user_id = self::identify_user();
+
+		$downloads = edd_get_payment_meta_cart_details( $payment_id );
+		$amount    = edd_get_payment_amount( $payment_id );
+
+		$products = array();
+		foreach( $downloads as $download ) {
+			$products[] = get_the_title( $download_id );
+		}
+
+		Analytics::track(array(
+			"userId" => $user_id,
+			"event" => "Purchased Product(s)",
+			"properties" => array(
+				"cart quantity" => edd_get_cart_quantity(),
+				"products" => implode( ', ', $products ),
+				"value" => $amount,
+				"purchase date" => strtotime( get_post_field( 'post_date', $payment_id ) )
+				)
+			)
+		);
+	}
+
+
 
 	/*
 		Product Download Functions
