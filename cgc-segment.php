@@ -26,7 +26,7 @@ class cgcSegment {
 		$user = get_userdata( $user_id );
 
 		Analytics::identify(array(
-		  "userId" => $user->user_email,
+		  "userId" => $user_id,
 		  "traits" => array(
 		    "firstName" => $user->first_name,
 		    "lastName" => $user->last_name,
@@ -35,7 +35,7 @@ class cgcSegment {
 		));
 
 		Analytics::track(array(
-		  "userId" => $user->user_email,
+		  "userId" => $user_id,
 		  "event" => "Added Product to Cart",
 		  "properties" => array(
 		    "product" => get_the_title( $download_id ),
