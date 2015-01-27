@@ -8,13 +8,16 @@
  */
 
 
-require_once dirname( __FILE__ ) . "/analytics-php/lib/Segment.php"
-
-function cgc_segment_edd_added_product_to_cart( $download_id ) {
-	# Setup our Segment tracking and
-	# alias to Analytics for convenience
+# Setup our Segment tracking and
+# alias to Analytics for convenience
+if ( ! class_exists( 'Segment' ) ) {
+	require_once dirname( __FILE__ ) . "/analytics-php/lib/Segment.php"
 	class_alias('Segment', 'Analytics');
 	Analytics::init("jOMIQl4Nqe4zzkUNITBHlyKKVixnTpTl");
+}
+
+
+function cgc_segment_edd_added_product_to_cart( $download_id ) {
 	
 	Analytics::track(array(
 	  "userId" => "test user",
