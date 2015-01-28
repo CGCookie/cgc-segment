@@ -17,8 +17,8 @@ class cgcSegment {
 
 		class_alias('Segment', 'Analytics');
 		Analytics::init("jOMIQl4Nqe4zzkUNITBHlyKKVixnTpTl");
-		add_action( 'edd_post_add_to_cart', array($this,'track_add_product_to_cart'), 10, 2 );
-		add_action( 'edd_remove', array($this, 'track_remove_product_from_cart'), 10, 2);
+		add_action( 'edd_post_add_to_cart', array($this,'track_add_product_to_cart'), 1, 2 );
+		add_action( 'edd_remove', array($this, 'track_remove_product_from_cart'), 1, 2);
 
 		add_action( 'edd_complete_download_purchase', array($this, 'track_purchase'), 9999, 3 );
 	}
@@ -61,10 +61,12 @@ class cgcSegment {
 
 		Analytics::track(array(
 			"userId" => $user_id,
-			"event" => "Added Product to Cart",
+			"event" => "Added Product",
 			"properties" => array(
-				"product" => get_the_title( $download_id ),
-				"value" => edd_get_cart_item_price( $download_id, $options )
+				"id" => $download_id,
+				"name" => get_the_title( $download_id ),
+				"price" => edd_get_cart_item_price( $download_id, $options ),
+				"category" => self::cgc_get_product_category( $download_id )
 				)
 			)
 		);
@@ -75,10 +77,12 @@ class cgcSegment {
 
 		Analytics::track(array(
 			"userId" => $user_id,
-			"event" => "Removed Product from Cart",
+			"event" => "Removed Product",
 			"properties" => array(
-				"product" => get_the_title( $download_id ),
-				"value" => edd_get_cart_item_price( $download_id, $options )
+				"id" =>  $download_id,
+				"name" => get_the_title( $download_id ),
+				"price" => edd_get_cart_item_price( $download_id, $options ),
+				"category" => self::cgc_get_product_category( $download_id )
 				)
 			)
 		);
@@ -95,6 +99,7 @@ class cgcSegment {
 
 		$downloads = edd_get_payment_meta_cart_details( $payment_id );
 		$amount = edd_get_payment_amount( $payment_id );
+		$discounts = edd_get_cart_discounts();
 		$purchase_date = edd_get_payment_completed_date( $payment_id );
 
 		// Not using for now; not working correctly so will track single products instead.
@@ -103,14 +108,19 @@ class cgcSegment {
 		// 	$products[] = get_the_title( $download_id['id'] );
 		// }
 
+		// "cart quantity" => edd_get_cart_quantity(),
 		Analytics::track(array(
 			"userId" => $user_id,
-			"event" => "Purchased Product",
+			"event" => "Completed Order",
 			"properties" => array(
-				"cart quantity" => edd_get_cart_quantity(),
+				"orderId" => $payment_id,
+				"total" => $amount,
+				"revenue" => $amount,
+				"currency" => "USD",
+				"discounts" => 0,
+				"coupon" => $discounts,
+				"repeat" => '',
 				"product" => get_the_title( $download_id ),
-				// "products" => implode( ', ', $products ),
-				"value" => $amount,
 				"purchase date" => $purchase_date
 				)
 			)
