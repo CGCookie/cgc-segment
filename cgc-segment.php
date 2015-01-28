@@ -20,7 +20,7 @@ class cgcSegment {
 		add_action( 'edd_post_add_to_cart', array($this,'track_add_product_to_cart'), 1, 2 );
 		add_action( 'edd_remove', array($this, 'track_remove_product_from_cart'), 1, 2);
 
-		add_action( 'edd_complete_download_purchase', array($this, 'track_purchase'), 9999, 3 );
+		add_action( 'edd_complete_purchase', array($this, 'track_purchase'), 9999, 1 );
 	}
 
 	function identify_user() {
@@ -89,23 +89,22 @@ class cgcSegment {
 
 	// function track_save_cart()
 
-
 	/*
 		Purchase Functions
 	*/
-	function track_purchase( $download_id, $payment_id, $download_type ) {
+	function track_purchase( $payment_id ) {
 		$user_id = self::identify_user();
 
-		$downloads = edd_get_payment_meta_cart_details( $payment_id );
 		$amount = edd_get_payment_amount( $payment_id );
 		$discounts = edd_get_cart_discounts();
 		$purchase_date = edd_get_payment_completed_date( $payment_id );
 
-		// Not using for now; not working correctly so will track single products instead.
-		// $products = array();
-		// foreach( $downloads as $download ) {
-		// 	$products[] = get_the_title( $download_id['id'] );
-		// }
+		$downloads = edd_get_payment_meta_cart_details( $payment_id );
+
+		$products = array();
+		foreach( $downloads as $download ) {
+			$products[] = get_the_title( $download_id );
+		}
 
 		// "cart quantity" => edd_get_cart_quantity(),
 		Analytics::track(array(
@@ -119,9 +118,8 @@ class cgcSegment {
 				"discounts" => 0,
 				"coupon" => $discounts,
 				"repeat" => '',
-				"product" => get_the_title( $download_id ),
-				"category" => self::cgc_get_product_category( $download_id ),
-				"purchase date" => $purchase_date
+				"purchase date" => $purchase_date,
+				"products" => $products
 				)
 			)
 		);
