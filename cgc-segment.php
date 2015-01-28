@@ -20,7 +20,7 @@ class cgcSegment {
 		add_action( 'edd_post_add_to_cart', array($this,'track_add_product_to_cart'), 10, 2 );
 		add_action( 'edd_remove', array($this, 'track_remove_product_from_cart'), 10, 2);
 
-		add_action( 'edd_complete_purchase', array($this, 'track_purchase'), 10, 3 );
+		add_action( 'edd_complete_download_purchase', array($this, 'track_purchase'), 9999, 3 );
 	}
 
 	function identify_user() {
@@ -84,17 +84,19 @@ class cgcSegment {
 		$amount = edd_get_payment_amount( $payment_id );
 		$purchase_date = edd_get_payment_completed_date( $payment_id );
 
-		$products = array();
-		foreach( $downloads as $download ) {
-			$products[] = get_the_title( $download_id['id'] );
-		}
+		// Not using for now; not working correctly so will track single products instead.
+		// $products = array();
+		// foreach( $downloads as $download ) {
+		// 	$products[] = get_the_title( $download_id['id'] );
+		// }
 
 		Analytics::track(array(
 			"userId" => $user_id,
-			"event" => "Purchased Product(s)",
+			"event" => "Purchased Product",
 			"properties" => array(
 				"cart quantity" => edd_get_cart_quantity(),
-				"products" => implode( ', ', $products ),
+				"product" => get_the_title( $download_id ),
+				// "products" => implode( ', ', $products ),
 				"value" => $amount,
 				"purchase date" => $purchase_date
 				)
