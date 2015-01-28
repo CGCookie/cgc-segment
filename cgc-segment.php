@@ -121,6 +121,7 @@ class cgcSegment {
 				"coupon" => $discounts,
 				"repeat" => '',
 				"product" => get_the_title( $download_id ),
+				"category" => self::cgc_get_product_category( $download_id ),
 				"purchase date" => $purchase_date
 				)
 			)
