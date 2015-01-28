@@ -79,10 +79,9 @@ class cgcSegment {
 			"userId" => $user_id,
 			"event" => "Removed Product",
 			"properties" => array(
-				"id" =>  $download_id,
+				"id" => $download_id,
 				"name" => get_the_title( $download_id ),
 				"price" => edd_get_cart_item_price( $download_id, $options ),
-				"category" => self::cgc_get_product_category( $download_id )
 				)
 			)
 		);
