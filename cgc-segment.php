@@ -102,7 +102,12 @@ class cgcSegment {
 		$tax = edd_get_payment_tax();
 		$discounts = edd_get_cart_discounts();
 
-		$downloads = edd_get_payment_meta_cart_details( $payment_id );
+		// $repeat = false;
+		if ( edd_get_users_purchases( $user_id ) == false ) {
+			$repeat = false;
+		} else {
+			$repeat = true;
+		}
 
 		$downloads = edd_get_payment_meta_cart_details( $payment_id );
 		$products = array();
@@ -121,8 +126,7 @@ class cgcSegment {
 				"tax" => $tax,
 				"discount" => $subtotal - $total, // total - coupon amount
 				"coupon" => $discounts,
-				"repeat" => '',
-				"purchase date" => $purchase_date,
+				"repeat" => $repeat,
 				"products" => $products
 				)
 			)
