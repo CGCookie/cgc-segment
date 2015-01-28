@@ -102,7 +102,6 @@ class cgcSegment {
 		$tax = edd_get_payment_tax();
 		$discounts = edd_get_cart_discounts();
 
-		// $repeat = false;
 		if ( edd_get_users_purchases( $user_id ) == false ) {
 			$repeat = false;
 		} else {
