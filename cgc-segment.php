@@ -42,6 +42,19 @@ class cgcSegment {
 	/*
 		Cart Functions
 	*/
+	function cgc_get_product_category( $download_id ){
+		$terms = get_the_terms( $download_id, 'download_category' );
+
+		if ( $terms && ! is_wp_error( $terms ) ):
+			$category_names = array();
+
+			foreach( $terms as $term ) {
+				$category_names[] = $term->name;
+			}
+		$categories = join( ", ", $category_names );
+		return $categories;
+		endif;
+	}
 
 	function track_add_product_to_cart( $download_id, $options ) {
 		$user_id = self::identify_user();
