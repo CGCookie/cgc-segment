@@ -89,33 +89,37 @@ class cgcSegment {
 
 	// function track_save_cart()
 
+
 	/*
 		Purchase Functions
 	*/
 	function track_purchase( $payment_id ) {
 		$user_id = self::identify_user();
 
-		$amount = edd_get_payment_amount( $payment_id );
+		$subtotal = edd_get_payment_subtotal( $payment_id );
+		$total = edd_get_payment_amount( $payment_id );
+
+		$tax = edd_get_payment_tax();
 		$discounts = edd_get_cart_discounts();
-		$purchase_date = edd_get_payment_completed_date( $payment_id );
 
 		$downloads = edd_get_payment_meta_cart_details( $payment_id );
 
+		$downloads = edd_get_payment_meta_cart_details( $payment_id );
 		$products = array();
 		foreach( $downloads as $download ) {
-			$products[] = get_the_title( $download_id );
+			$products[] = get_the_title( $download['id'] );
 		}
 
-		// "cart quantity" => edd_get_cart_quantity(),
 		Analytics::track(array(
 			"userId" => $user_id,
 			"event" => "Completed Order",
 			"properties" => array(
 				"orderId" => $payment_id,
-				"total" => $amount,
-				"revenue" => $amount,
+				"total" => $subtotal,
+				"revenue" => $total,
 				"currency" => "USD",
-				"discounts" => 0,
+				"tax" => $tax,
+				"discount" => $subtotal - $total, // total - coupon amount
 				"coupon" => $discounts,
 				"repeat" => '',
 				"purchase date" => $purchase_date,
@@ -124,7 +128,6 @@ class cgcSegment {
 			)
 		);
 	}
-
 
 
 	/*
