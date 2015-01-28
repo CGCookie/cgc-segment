@@ -81,11 +81,12 @@ class cgcSegment {
 		$user_id = self::identify_user();
 
 		$downloads = edd_get_payment_meta_cart_details( $payment_id );
-		$amount    = edd_get_payment_amount( $payment_id );
+		$amount = edd_get_payment_amount( $payment_id );
+		$purchase_date = edd_get_payment_completed_date( $payment_id );
 
 		$products = array();
 		foreach( $downloads as $download ) {
-			$products[] = get_the_title( $download_id );
+			$products[] = get_the_title( $download_id['id'] );
 		}
 
 		Analytics::track(array(
@@ -95,7 +96,7 @@ class cgcSegment {
 				"cart quantity" => edd_get_cart_quantity(),
 				"products" => implode( ', ', $products ),
 				"value" => $amount,
-				"purchase date" => strtotime( get_post_field( 'post_date', $payment_id ) )
+				"purchase date" => $purchase_date
 				)
 			)
 		);
