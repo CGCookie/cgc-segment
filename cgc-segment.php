@@ -33,6 +33,7 @@ class cgcSegment {
 				"firstName" => $user->first_name,
 				"lastName" => $user->last_name,
 				"email" => $user->user_email,
+				"username" => $user->user_login,
 				)
 			)
 		);
