@@ -24,7 +24,7 @@ function cgc_edd_track_add_product_to_cart( $download_id, $options ) {
 		"id" => $download_id,
 		"name" => get_the_title( $download_id ),
 		"price" => edd_get_cart_item_price( $download_id, $options ),
-		"category" => self::cgc_get_product_category( $download_id )
+		"category" => cgc_edd_get_product_category( $download_id )
 	);
 
 	cgcSegment::track( 'Added Product', $properties );
@@ -46,21 +46,33 @@ function cgc_edd_track_add_product_to_cart( $download_id, $options ) {
 add_action( 'edd_post_add_to_cart', 'cgc_edd_track_add_product_to_cart', 1, 2 );
 
 
-function cgc_edd_track_remove_product_from_cart( $download_id, $options ) {
-	$user_id = self::identify_user();
+function cgc_edd_track_remove_product_from_cart( $cart_key ) {
 
-	Analytics::track(array(
-		"userId" => $user_id,
-		"event" => "Removed Product",
-		"properties" => array(
-			"id" => $download_id,
-			"name" => get_the_title( $download_id ),
-			"price" => edd_get_cart_item_price( $download_id, $options ),
-			)
-		)
-	);
+	$contents    = edd_get_cart_contents();
+	$cart_item   = $contents[ $cart_key ];
+	$download_id = $cart_item['id'];
+	$options     = $cart_item['options'];
+
+	$properties = array(
+		"id" => $download_id,
+		"name" => get_the_title( $download_id ),
+		"price" => edd_get_cart_item_price( $download_id, $options )
+		);
+
+	cgcSegment::track( 'Removed Product', $properties );
+
+	// Analytics::track(array(
+	// 	"userId" => $user_id,
+	// 	"event" => "Removed Product",
+	// 	"properties" => array(
+	// 		"id" => $download_id,
+	// 		"name" => get_the_title( $download_id ),
+	// 		"price" => edd_get_cart_item_price( $download_id, $options ),
+	// 		)
+	// 	)
+	// );
 }
-add_action( 'edd_remove', 'cgc_edd_track_remove_product_from_cart', 1, 2);
+add_action( 'edd_pre_remove_from_cart', 'cgc_edd_track_remove_product_from_cart' );
 
 // function track_save_cart()
 
@@ -69,12 +81,11 @@ add_action( 'edd_remove', 'cgc_edd_track_remove_product_from_cart', 1, 2);
 	Purchase Functions
 */
 function cgc_edd_track_purchase( $payment_id ) {
-	$user_id = self::identify_user();
+	$user_id = get_current_user_id();
 
 	if( ! class_exists( 'Easy_Digital_Downloads' ) ) {
 		return false;
 	}
-
 	$subtotal = edd_get_payment_subtotal( $payment_id );
 	$total = edd_get_payment_amount( $payment_id );
 
@@ -94,22 +105,37 @@ function cgc_edd_track_purchase( $payment_id ) {
 		$products[] = get_the_title( $download['id'] );
 	}
 
-	Analytics::track(array(
-		"userId" => $user_id,
-		"event" => "Completed Order",
-		"properties" => array(
-			"orderId" => $payment_id,
-			"total" => $subtotal,
-			"revenue" => $total,
-			"currency" => "USD",
-			"tax" => $tax,
-			"discount" => $subtotal - $total, // total - coupon amount
-			"coupon" => $discounts,
-			"repeat" => $repeat,
-			"products" => $products
-			)
-		)
-	);
+	$properties = array(
+		"orderId" => $payment_id,
+		"total" => $subtotal,
+		"revenue" => $total,
+		"currency" => "USD",
+		"tax" => $tax,
+		"discount" => $subtotal - $total, // total - coupon amount
+		"coupon" => $discounts,
+		"repeat" => $repeat,
+		"products" => $products
+		);
+
+	cgcSegment::track( 'Completed Order', $properties );
+
+
+	// Analytics::track(array(
+	// 	"userId" => $user_id,
+	// 	"event" => "Completed Order",
+	// 	"properties" => array(
+	// 		"orderId" => $payment_id,
+	// 		"total" => $subtotal,
+	// 		"revenue" => $total,
+	// 		"currency" => "USD",
+	// 		"tax" => $tax,
+	// 		"discount" => $subtotal - $total, // total - coupon amount
+	// 		"coupon" => $discounts,
+	// 		"repeat" => $repeat,
+	// 		"products" => $products
+	// 		)
+	// 	)
+	// );
 }
 add_action( 'edd_complete_purchase', 'cgc_edd_track_purchase', 9999, 1 );
 
