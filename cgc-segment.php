@@ -17,6 +17,9 @@ class cgcSegment {
 
 		class_alias('Segment', 'Analytics');
 		Analytics::init("jOMIQl4Nqe4zzkUNITBHlyKKVixnTpTl");
+
+		add_action( 'gform_after_submission_1', array($this, 'cgc_user_registration'), 10, 2);
+
 		add_action( 'edd_post_add_to_cart', array($this,'track_add_product_to_cart'), 1, 2 );
 		add_action( 'edd_remove', array($this, 'track_remove_product_from_cart'), 1, 2);
 
@@ -38,6 +41,30 @@ class cgcSegment {
 			)
 		);
 		return $user_id;
+	}
+
+
+	/*
+		User Account Functions
+	*/
+	function cgc_user_registration( $entry, $user_id ) {
+
+		$user_id = self::identify_user();
+
+		if ( $entry["4"] == true ) {
+			$subscribed = true;
+		} else {
+			$subscribed = false;
+		}
+
+		Analytics::track(array(
+			"userId" => $user_id,
+			"event" => "User Signup",
+			"properties" => array(
+				"subscribed_newsletter" => $subscribed
+				)
+			)
+		);
 	}
 
 	/*
