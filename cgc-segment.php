@@ -15,18 +15,19 @@ class cgcSegment {
 
 		require_once dirname( __FILE__ ) . "/analytics-php/lib/Segment.php";
 
+		if( class_exists( 'Easy_Digital_Downloads' ) ) {
+			require_once dirname( __FILE__ ) . "/includes/edd.php";
+		}
+		if( function_exists( 'rcp_is_active' ) ) {
+			require_once dirname( __FILE__ ) . "/includes/rcp.php";
+		}
+
 		class_alias('Segment', 'Analytics');
 		Analytics::init("jOMIQl4Nqe4zzkUNITBHlyKKVixnTpTl");
 
-		add_action( 'gform_after_submission_1', array($this, 'cgc_user_registration'), 10, 2);
-
-		add_action( 'edd_post_add_to_cart', array($this,'track_add_product_to_cart'), 1, 2 );
-		add_action( 'edd_remove', array($this, 'track_remove_product_from_cart'), 1, 2);
-
-		add_action( 'edd_complete_purchase', array($this, 'track_purchase'), 9999, 1 );
 	}
 
-	function identify_user() {
+	public static function identify_user() {
 		$user_id = get_current_user_id();
 		$user = get_userdata( $user_id );
 
@@ -44,130 +45,22 @@ class cgcSegment {
 	}
 
 
-	/*
-		User Account Functions
-	*/
-	function cgc_user_registration( $entry, $user_id ) {
+	public static function track( $event = '', $properties = array() ) {
 
-		$user_id = self::identify_user();
-
-		if ( $entry["4"] == true ) {
-			$subscribed = true;
-		} else {
-			$subscribed = false;
+		if( empty( $event ) || empty( $properties ) ) {
+			return false;
 		}
 
 		Analytics::track(array(
-			"userId" => $user_id,
-			"event" => "User Signup",
-			"properties" => array(
-				"subscribed_newsletter" => $subscribed
-				)
+				"userId" => self::identify_user(),
+				"event" => $event,
+				"properties" => $properties
 			)
 		);
 	}
-
-	/*
-		Cart Functions
-	*/
-	function cgc_get_product_category( $download_id ){
-		$terms = get_the_terms( $download_id, 'download_category' );
-
-		if ( $terms && ! is_wp_error( $terms ) ):
-			$category_names = array();
-
-			foreach( $terms as $term ) {
-				$category_names[] = $term->name;
-			}
-		$categories = join( ", ", $category_names );
-		return $categories;
-		endif;
-	}
-
-	function track_add_product_to_cart( $download_id, $options ) {
-		$user_id = self::identify_user();
-
-		Analytics::track(array(
-			"userId" => $user_id,
-			"event" => "Added Product",
-			"properties" => array(
-				"id" => $download_id,
-				"name" => get_the_title( $download_id ),
-				"price" => edd_get_cart_item_price( $download_id, $options ),
-				"category" => self::cgc_get_product_category( $download_id )
-				)
-			)
-		);
-	}
-
-	function track_remove_product_from_cart( $download_id, $options ) {
-		$user_id = self::identify_user();
-
-		Analytics::track(array(
-			"userId" => $user_id,
-			"event" => "Removed Product",
-			"properties" => array(
-				"id" => $download_id,
-				"name" => get_the_title( $download_id ),
-				"price" => edd_get_cart_item_price( $download_id, $options ),
-				)
-			)
-		);
-	}
-
-	// function track_save_cart()
-
-
-	/*
-		Purchase Functions
-	*/
-	function track_purchase( $payment_id ) {
-		$user_id = self::identify_user();
-
-		$subtotal = edd_get_payment_subtotal( $payment_id );
-		$total = edd_get_payment_amount( $payment_id );
-
-		$tax = edd_get_payment_tax();
-		$discounts = edd_get_cart_discounts();
-
-		if ( edd_get_users_purchases( $user_id ) == false ) {
-			$repeat = false;
-		} else {
-			$repeat = true;
-		}
-
-		$downloads = edd_get_payment_meta_cart_details( $payment_id );
-		$products = array();
-		foreach( $downloads as $download ) {
-			$products[] = get_the_title( $download['id'] );
-		}
-
-		Analytics::track(array(
-			"userId" => $user_id,
-			"event" => "Completed Order",
-			"properties" => array(
-				"orderId" => $payment_id,
-				"total" => $subtotal,
-				"revenue" => $total,
-				"currency" => "USD",
-				"tax" => $tax,
-				"discount" => $subtotal - $total, // total - coupon amount
-				"coupon" => $discounts,
-				"repeat" => $repeat,
-				"products" => $products
-				)
-			)
-		);
-	}
-
-
-	/*
-		Product Download Functions
-	*/
-
-	// function track_product_downloaded()
-
-
 }
 
-new cgcSegment;
+function cgc_segment_load() {
+	new cgcSegment;
+}
+add_action( 'plugins_loaded', 'cgc_segment_load' );
