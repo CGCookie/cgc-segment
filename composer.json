@@ -1,0 +1,22 @@
+{
+    "name": "cgcookie/cgc-segment",
+    "type": "plugin",
+    "description": "Sends CGC data to segment.io",
+    "keywords": [ "segment", "data", "customer", "events", "plugin"],
+    "homepage": "http://cgcookie.com",
+    "authors": [
+        {
+            "name": "Nick Haskins",
+            "email": "nick@cgcookie.com",
+            "homepage": "http://cgcookie.com"
+        },
+        {
+            "name": "Jonathan Williamson",
+            "email": "jonathan@cgcookie.com",
+            "homepage": "http://cgcookie.com"
+        }
+    ],
+    "require": {
+        "composer/installers": "~1.0.6"
+    }
+}
