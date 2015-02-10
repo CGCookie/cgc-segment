@@ -64,7 +64,8 @@ function cgc_edd_track_purchase( $payment_id ) {
 	$traits = array(
 		"userId" => $user_id,
 		"firstName" => $userInfo[ 'first_name' ],
-		"lastName" => $userInfo[ 'last_name' ]
+		"lastName" => $userInfo[ 'last_name' ],
+		"email" => $userInfo[ 'email' ],
 		);
 
 	if( ! class_exists( 'Easy_Digital_Downloads' ) ) {
