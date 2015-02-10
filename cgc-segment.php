@@ -29,11 +29,16 @@ class cgcSegment {
 
 	public static function identify_user( $traits = array() ) {
 
-		$user_id = get_current_user_id();
-		$user = get_userdata( $user_id );
+		if ( is_user_logged_in() ) {
+			$user_id = get_current_user_id();
+			$user = get_userdata( $user_id );
+		} else {
+			$user_id = 'anonymous';
+		}
+
 
 		# Check for traits
-		if( empty( $traits ) ) {
+		if( empty( $traits ) && is_user_logged_in() ) {
 
 			$traits = array(
 				"firstName" => $user->first_name,
