@@ -62,6 +62,7 @@ function cgc_edd_track_purchase( $payment_id ) {
 	$userInfo = edd_get_payment_meta_user_info( $payment_id);
 
 	$traits = array(
+		"userId" => $user_id,
 		"firstName" => $userInfo[ 'first_name' ],
 		"lastName" => $userInfo[ 'last_name' ]
 		);
@@ -100,7 +101,7 @@ function cgc_edd_track_purchase( $payment_id ) {
 		"products" => $products
 		);
 
-	cgcSegment::track( 'Completed Order', $properties );
+	cgcSegment::track( 'Completed Order', $properties, $traits );
 }
 add_action( 'edd_complete_purchase', 'cgc_edd_track_purchase', 9999, 1 );
 

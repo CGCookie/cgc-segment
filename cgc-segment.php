@@ -29,10 +29,11 @@ class cgcSegment {
 
 	public static function identify_user( $traits = array() ) {
 
+		$user_id = get_current_user_id();
+		$user = get_userdata( $user_id );
+
 		# Check for traits
 		if( empty( $traits ) ) {
-			$user_id = get_current_user_id();
-			$user = get_userdata( $user_id );
 
 			$traits = array(
 				"firstName" => $user->first_name,
@@ -51,14 +52,14 @@ class cgcSegment {
 		return $args;
 	}
 
-	public static function track( $event = '', $properties = array() ) {
+	public static function track( $event = '', $properties = array(), $traits = array() ) {
 
 		# If no event name or properties are passed, return
 		if( empty( $event ) || empty( $properties ) ) {
 			return false;
 		}
 
-		$userdata = self::identify_user();
+		$userdata = self::identify_user( $traits );
 
 		Analytics::track(array(
 				"userId" => $userdata['userId'],
