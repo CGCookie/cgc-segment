@@ -110,5 +110,14 @@ add_action( 'edd_complete_purchase', 'cgc_edd_track_purchase', 9999, 1 );
 	Product Download Functions
 */
 
-// function track_product_downloaded()
+function cgc_edd_track_product_downloaded( $download_id, $email ) {
+
+	$product = get_the_title( $download_id );
+
+	$properties = array(
+		"product" => $product,
+		);
+	cgcSegment::track( 'Product Download', $properties );
+}
+add_action( 'edd_process_verified_download', 'cgc_edd_track_product_downloaded', 10, 2 );
 
