@@ -30,6 +30,7 @@ class cgcSegment {
 		if( function_exists( 'rcp_is_active' ) ) {
 			require_once dirname( __FILE__ ) . "/includes/rcp.php";
 		}
+		require_once dirname( __FILE__ ) . "/includes/pageviews.php";
 
 		# Setup our Segment tracking and
 		# alias to Analytics for convenience
@@ -68,10 +69,11 @@ class cgcSegment {
 		return $args;
 	}
 
+
 	public static function track( $event = '', $properties = array(), $traits = array() ) {
 
-		# If no event name or properties are passed, return
-		if( empty( $event ) || empty( $properties ) ) {
+		# If no event name is passed, return
+		if( empty( $event ) ) {
 			return false;
 		}
 
@@ -84,6 +86,21 @@ class cgcSegment {
 			)
 		);
 	}
+
+
+	public static function page( $pagename = '', $properties = array(), $traits = array() ) {
+
+		$userdata = self::identify_user( $traits );
+
+		Analytics::page(array(
+			"userId" => $userdata['userId'],
+			"name" => $pagename,
+			"properties" => $properties
+			)
+		);
+	}
+
+
 }
 
 function cgc_segment_menu() {
