@@ -14,6 +14,14 @@ class cgcSegment {
 
 	function __construct(){
 
+		$options = get_option( 'cgc_segment' );
+
+		if( $options != '' ) {
+
+			$cgc_segment_write_key = $options['cgc_segment_write_key'];
+
+		}
+
 		require_once dirname( __FILE__ ) . "/analytics-php/lib/Segment.php";
 
 		if( class_exists( 'Easy_Digital_Downloads' ) ) {
@@ -113,19 +121,12 @@ function cgc_segment_options_page() {
 
 	}
 
-	$options = get_option( 'cgc_segment' );
-
-	if( $options != '' ) {
-
-		$cgc_segment_write_key = $options['cgc_segment_write_key'];
-
-	}
-
 	require ( 'includes/options_page_wrapper.php');
 
 }
 
 function cgc_segment_load() {
+
 	if( !empty( $cgc_segment_write_key ) ) {
 		new cgcSegment;
 	}
