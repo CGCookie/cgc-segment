@@ -25,8 +25,9 @@
 									<tr>
 										<td for="cgc_segment_write_key">Segment Project Write Key:</td>
 										<?php 
-											if( isset( $cgc_segment_write_key ) ): ?>
-												<td><input name="cgc_segment_write_key" id="" type="text" value="<?php echo $cgc_segment_write_key; ?>" class="regular-text" /></td>
+											$options = get_option( 'cgc_segment' );
+											if( isset( $options['cgc_segment_write_key'] ) ): ?>
+												<td><input name="cgc_segment_write_key" id="" type="text" value="<?php echo $options['cgc_segment_write_key']; ?>" class="regular-text" /></td>
 											<?php else: ?>
 												<td><input name="cgc_segment_write_key" id="" type="text" value="" class="regular-text" /></td>
 											<?php endif; ?>

@@ -18,7 +18,7 @@ class cgcSegment {
 
 		if( $options != '' ) {
 
-			$cgc_segment_write_key = $options['cgc_segment_write_key'];
+			$WRITE_KEY = $options['cgc_segment_write_key'];
 
 		}
 
@@ -34,7 +34,7 @@ class cgcSegment {
 		# Setup our Segment tracking and
 		# alias to Analytics for convenience
 		class_alias('Segment', 'Analytics');
-		Analytics::init( $cgc_segment_write_key );
+		Analytics::init( $WRITE_KEY );
 
 	}
 
@@ -127,7 +127,10 @@ function cgc_segment_options_page() {
 
 function cgc_segment_load() {
 
-	if( !empty( $cgc_segment_write_key ) ) {
+	$options = get_option( 'cgc_segment' );
+	$key = $options['cgc_segment_write_key'];
+
+	if( !empty( $key ) ) {
 		new cgcSegment;
 	}
 }
