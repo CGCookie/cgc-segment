@@ -11,7 +11,7 @@ function cgc_track_pageviews() {
 	if( is_page( $checkout ) ) {
 		cgcSegment::page( 'Checkout', $properties );
 	}
-	if( is_page( $purchase_history_page ) ) {
+	if( is_page( $purchase_history_page ) && ! empty( $edd_options['purchase_history_page'] ) ) {
 		cgcSegment::page( 'Purchase History', $properties );
 	}
 
