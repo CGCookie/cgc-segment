@@ -69,7 +69,7 @@ function cgc_rcp_account_upgrade_stripe( $payment_id) {
 	cgcSegment::track( 'Account Upgraded', $traits, $properties );
 
 }
-add_action( 'rcp_stripe_signup', 'cgc_rcp_account_upgrade', 10, 2 );
+add_action( 'rcp_stripe_signup', 'cgc_rcp_account_upgrade_stripe', 10, 2 );
 
 
 # function cgc_rcp_account_cancelled
