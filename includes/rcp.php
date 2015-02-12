@@ -20,9 +20,6 @@ function cgc_rcp_track_account_created( $user_id, $newsletters ) {
 		'created' => date( 'Y-m-d H:i:s' )
 		);
 
-	// $mp->createAlias( cgc_mixpanel_get_id_from_cookie(), $user->user_login );
-	// $mp->identify( $user->user_login, cgc_mixpanel_get_id_from_cookie() );
-
 	cgcSegment::track( 'Account Created', $properties, $traits );
 }
 add_action( 'cgc_rcp_account_created', 'cgc_rcp_track_account_created', 10, 2 );
