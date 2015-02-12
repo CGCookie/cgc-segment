@@ -4,11 +4,16 @@ function cgc_rcp_track_account_created( $user_id, $newsletters ) {
 
 	$user = get_userdata( $user_id );
 
-	$properties = array(
+	$traits = array(
 		'firstName' => $user->first_name,
 		'lastName' => $user->last_name,
 		'email' => $user->user_email,
 		'username' => $user->user_login,
+		'account type' => 'Basic',
+		'account status' => 'Free',
+		);
+
+	$properties = array(
 		'account type' => 'Basic',
 		'account status' => 'Free',
 		'newsletters' => implode( ',', $newsletters ),
@@ -18,7 +23,7 @@ function cgc_rcp_track_account_created( $user_id, $newsletters ) {
 	// $mp->createAlias( cgc_mixpanel_get_id_from_cookie(), $user->user_login );
 	// $mp->identify( $user->user_login, cgc_mixpanel_get_id_from_cookie() );
 
-	cgcSegment::track( 'Account Created', $properties );
+	cgcSegment::track( 'Account Created', $properties, $traits );
 }
 add_action( 'cgc_rcp_account_created', 'cgc_rcp_track_account_created', 10, 2 );
 
@@ -66,7 +71,7 @@ function cgc_rcp_account_upgrade_stripe( $payment_id) {
 		'Time Since Creation' => human_time_diff( $user_time, current_time( 'timestamp' ) ),
 		);
 
-	cgcSegment::track( 'Account Upgraded', $traits, $properties );
+	cgcSegment::track( 'Account Upgraded', $properties, $traits );
 
 }
 add_action( 'rcp_stripe_signup', 'cgc_rcp_account_upgrade_stripe', 10, 2 );
