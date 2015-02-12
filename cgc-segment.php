@@ -44,10 +44,7 @@ class cgcSegment {
 		if ( is_user_logged_in() ) {
 			$user_id = get_current_user_id();
 			$user = get_userdata( $user_id );
-		} else {
-			$user_id = 'anonymous';
 		}
-
 
 		# Check for traits
 		if( empty( $traits ) && is_user_logged_in() ) {
@@ -62,7 +59,7 @@ class cgcSegment {
 
 		# User data to be passed
 		$args = array(
-			"userId" => $user_id,
+			"userId" => is_user_logged_in() ? $user_id : $_SERVER['REMOTE_ADDR'],
 			"traits" => $traits
 		);
 		Analytics::identify( $args );
@@ -77,10 +74,9 @@ class cgcSegment {
 			return false;
 		}
 
-		$userdata = self::identify_user( $traits );
-
 		Analytics::track(array(
-				"userId" => $userdata['userId'],
+				// "userId" => $userdata['userId'],
+				"userId" => is_user_logged_in() ? get_current_user_id() : $_SERVER['REMOTE_ADDR'],
 				"event" => $event,
 				"properties" => $properties
 			)
@@ -90,10 +86,8 @@ class cgcSegment {
 
 	public static function page( $pagename = '', $properties = array(), $traits = array() ) {
 
-		$userdata = self::identify_user( $traits );
-
 		Analytics::page(array(
-			"userId" => $userdata['userId'],
+			"userId" => is_user_logged_in() ? get_current_user_id() : $_SERVER['REMOTE_ADDR'],
 			"name" => $pagename,
 			"properties" => $properties
 			)
