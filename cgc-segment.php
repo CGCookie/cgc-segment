@@ -31,6 +31,7 @@ class cgcSegment {
 			require_once dirname( __FILE__ ) . "/includes/rcp.php";
 		}
 		require_once dirname( __FILE__ ) . "/includes/pageviews.php";
+		require_once dirname( __FILE__ ) . "/includes/user_login.php";
 
 		# Setup our Segment tracking and
 		# alias to Analytics for convenience
