@@ -9,13 +9,13 @@ function cgc_rcp_track_account_created( $user_id, $newsletters ) {
 		'lastName' => $user->last_name,
 		'email' => $user->user_email,
 		'username' => $user->user_login,
-		'account type' => 'Basic',
-		'account status' => 'Free',
+		'type' => 'Basic',
+		'status' => 'Free',
 		);
 
 	$properties = array(
-		'account type' => 'Basic',
-		'account status' => 'Free',
+		'type' => 'Basic',
+		'status' => 'Free',
 		'newsletters' => implode( ',', $newsletters ),
 		'created' => date( 'Y-m-d H:i:s' )
 		);
@@ -45,9 +45,9 @@ function cgc_rcp_account_upgrade_stripe( $payment_id) {
 		'lastName' => '',
 		'email' => '',
 		'username' => '',
-		'account type' => 'Citizen',
-		'account status' => 'Active',
-		'account level' => $subscription,
+		'type' => 'Citizen',
+		'status' => 'Active',
+		'level' => $subscription,
 		'recurring' => $recurring,
 		'expiration' => $expiration
 		);
@@ -57,9 +57,9 @@ function cgc_rcp_account_upgrade_stripe( $payment_id) {
 	}
 
 	$properties = array(
-		'account type' => 'Citizen',
-		'account status' => 'Active',
-		'account level' => $subscription,
+		'type' => 'Citizen',
+		'status' => 'Active',
+		'level' => $subscription,
 		'redeemed gift' => 'No',
 		'coupon' => $discount,
 		'recurring' => $recurring,
