@@ -8,11 +8,19 @@ function cgc_track_pageviews() {
 
 	$properties = array();
 
+	/* Ecommerce pages */
 	if( is_page( $checkout ) ) {
 		cgcSegment::page( 'Checkout', $properties );
 	}
 	if( is_page( $purchase_history_page ) && ! empty( $edd_options['purchase_history_page'] ) ) {
 		cgcSegment::page( 'Purchase History', $properties );
+	}
+
+	if( is_page( 'membership' ) ) {
+		cgcSegment::page( 'Membership', $properties );
+	}
+	if( is_page( 'registration' ) ) {
+		cgcSegment::page( 'Registration', $properties );
 	}
 
 }
