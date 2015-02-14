@@ -20,9 +20,9 @@ function cgc_rcp_track_account_created( $user_id, $newsletters ) {
 		'created' => date( 'Y-m-d H:i:s' )
 		);
 
-	cgcSegment::track( 'Account Created', $properties, $traits );
+	cgcSegment::track( 'Account Created', $properties, $traits, $user_id );
 }
-add_action( 'cgc_rcp_account_created', 'cgc_rcp_track_account_created', 10, 2 );
+add_action( 'cgc_rcp_account_created', 'cgc_rcp_track_account_created', 9999, 2 );
 
 
 # Stripe upgrades. This should become universal and pay payment details instead.

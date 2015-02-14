@@ -68,7 +68,7 @@ function cgc_edd_track_purchase( $payment_id ) {
 	$userInfo = edd_get_payment_meta_user_info( $payment_id);
 
 	$traits = array(
-		"userId" => is_user_logged_in() ? get_current_user_id() : $_SERVER['REMOTE_ADDR'],
+		"userId" => is_user_logged_in() ? get_current_user_id() : session_id(),
 		"firstName" => $userInfo[ 'first_name' ],
 		"lastName" => $userInfo[ 'last_name' ],
 		"email" => $userInfo[ 'email' ],

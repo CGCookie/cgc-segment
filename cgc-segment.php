@@ -68,15 +68,19 @@ class cgcSegment {
 	}
 
 
-	public static function track( $event = '', $properties = array(), $traits = array() ) {
+	public static function track( $event = '', $properties = array(), $traits = array(), $user_id = '' ) {
 
 		# If no event name is passed, return
 		if( empty( $event ) ) {
 			return false;
 		}
 
+		if ( empty( $user_id ) ) {
+			$user_id = session_id();
+		}
+
 		Analytics::track(array(
-				"userId" => is_user_logged_in() ? get_current_user_id() : $_SERVER['REMOTE_ADDR'],
+				"userId" => $user_id,
 				"event" => $event,
 				"traits" => $traits,
 				"properties" => $properties
@@ -88,7 +92,7 @@ class cgcSegment {
 	public static function page( $pagename = '', $properties = array(), $traits = array() ) {
 
 		Analytics::page(array(
-			"userId" => is_user_logged_in() ? get_current_user_id() : $_SERVER['REMOTE_ADDR'],
+			"userId" => is_user_logged_in() ? get_current_user_id() : session_id(),
 			"name" => $pagename,
 			"properties" => $properties
 			)

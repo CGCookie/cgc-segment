@@ -24,7 +24,7 @@ function cgc_track_login( $user_login, $user ) {
 	$properties = array();
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'User Login', $properties, $traits );
+	cgcSegment::track( 'User Login', $properties, $traits, $user_id);
 
 }
 add_action('wp_login', 'cgc_track_login', 10, 2);
