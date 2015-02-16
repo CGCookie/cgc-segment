@@ -22,6 +22,10 @@ function cgc_track_pageviews() {
 	if( is_page( 'registration' ) ) {
 		cgcSegment::page( 'Registration', $properties );
 	}
+	// Hard coding Blender Baiscs for now, will later replace with admin area.
+	if( is_single( 'blender-basics-introduction-for-beginners' ) ) {
+		cgcSegment::page( 'Blender Basics', $properties);
+	}
 
 }
 
