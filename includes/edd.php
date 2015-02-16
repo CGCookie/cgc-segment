@@ -20,7 +20,7 @@ function cgc_edd_get_product_category( $download_id ){
 function cgc_edd_track_add_product_to_cart( $download_id, $options ) {
 
 	$traits = array(
-		"userId" => is_user_logged_in() ? get_current_user_id() : $_SERVER['REMOTE_ADDR']
+		"userId" => is_user_logged_in() ? get_current_user_id() : session_id()
 		);
 
 	$properties = array(
@@ -30,7 +30,7 @@ function cgc_edd_track_add_product_to_cart( $download_id, $options ) {
 		"category" => cgc_edd_get_product_category( $download_id )
 	);
 
-	cgcSegment::track( 'Added Product', $properties, $traits );
+	cgcSegment::track( 'Added Product', $properties, $traits, $user_id );
 }
 add_action( 'edd_post_add_to_cart', 'cgc_edd_track_add_product_to_cart', 1, 2 );
 
@@ -38,7 +38,7 @@ add_action( 'edd_post_add_to_cart', 'cgc_edd_track_add_product_to_cart', 1, 2 );
 function cgc_edd_track_remove_product_from_cart( $cart_key ) {
 
 	$traits = array(
-		"userId" => is_user_logged_in() ? get_current_user_id() : $_SERVER['REMOTE_ADDR']
+		"userId" => is_user_logged_in() ? get_current_user_id() : session_id()
 		);
 
 	$contents    = edd_get_cart_contents();
@@ -52,7 +52,7 @@ function cgc_edd_track_remove_product_from_cart( $cart_key ) {
 		"price" => edd_get_cart_item_price( $download_id, $options )
 		);
 
-	cgcSegment::track( 'Removed Product', $properties, $traits );
+	cgcSegment::track( 'Removed Product', $properties, $traits, $user_id );
 
 }
 add_action( 'edd_pre_remove_from_cart', 'cgc_edd_track_remove_product_from_cart' );
@@ -66,9 +66,10 @@ add_action( 'edd_pre_remove_from_cart', 'cgc_edd_track_remove_product_from_cart'
 function cgc_edd_track_purchase( $payment_id ) {
 
 	$userInfo = edd_get_payment_meta_user_info( $payment_id);
+	$user_id = get_current_user_id();
 
 	$traits = array(
-		"userId" => is_user_logged_in() ? get_current_user_id() : session_id(),
+		"userId" => is_user_logged_in() ? $user_id : session_id(),
 		"firstName" => $userInfo[ 'first_name' ],
 		"lastName" => $userInfo[ 'last_name' ],
 		"email" => $userInfo[ 'email' ],
@@ -108,7 +109,7 @@ function cgc_edd_track_purchase( $payment_id ) {
 		"products" => $products
 		);
 
-	cgcSegment::track( 'Completed Order', $properties, $traits );
+	cgcSegment::track( 'Completed Order', $properties, $traits, $user_id );
 }
 add_action( 'edd_complete_purchase', 'cgc_edd_track_purchase', 9999, 1 );
 

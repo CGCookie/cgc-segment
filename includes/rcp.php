@@ -68,7 +68,7 @@ function cgc_rcp_account_upgrade_stripe( $payment_id) {
 		'Time Since Creation' => human_time_diff( $user_time, current_time( 'timestamp' ) ),
 		);
 
-	cgcSegment::track( 'Account Upgraded', $properties, $traits );
+	cgcSegment::track( 'Account Upgraded', $properties, $traits, $user_id );
 
 }
 add_action( 'rcp_stripe_signup', 'cgc_rcp_account_upgrade_stripe', 10, 2 );
