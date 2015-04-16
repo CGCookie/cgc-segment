@@ -6,7 +6,7 @@ function cgc_segment_js() {
 	// get_currentuserinfo();
 
 	$options = get_option( 'cgc_segment' );
-	$WRITE_KEY = $options['cgc_segment_write_key'];
+	$write_key = $options['cgc_segment_write_key'];
 ?>
 
 	<script type="text/javascript">
@@ -89,16 +89,17 @@ function cgc_segment_js() {
 
 		// Load Analytics.js with your key, which will automatically
 		// load the tools you've enabled for your account. Boosh!
-		analytics.load("<?php $WRITE_KEY ?>" );
+		analytics.load( "<?php echo ( $write_key ) ?>" );
 
 		// Make the first page call to load the integrations. If
 		// you'd like to manually name or tag the page, edit or
 		// move this call however you'd like.
-		analytics.page();
+		
+		// analytics.page();
 
-		<?php if ( is_single( 1 ) ): ?>
-			analytics.page( 'Hello World' );
-		<?php endif; ?>
+		// <?php if ( is_single( 1 ) ): ?>
+		// 	analytics.page( 'Hello World' );
+		// <?php endif; ?>
 
 	  })();
 	</script>
