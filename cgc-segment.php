@@ -59,11 +59,17 @@ class cgcSegment {
 				);
 		}
 
+		$context = array(
+			'ip' => $_SERVER['REMOTE_ADDR']
+			);
+
 		# User data to be passed
 		$args = array(
 			"userId" => $user_id,
-			"traits" => $traits
+			"traits" => $traits,
+			"context" => $context
 		);
+
 		Analytics::identify( $args );
 		return $args;
 	}
