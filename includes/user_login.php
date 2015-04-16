@@ -4,13 +4,16 @@ function cgc_track_login( $user_login, $user ) {
 
 	$user_id = $user->ID;
 	$user_data = get_userdata( $user_id );
+	$registered = ($user_data->user_registered . "\n");
+
 
 	$traits = array(
 		'userId' => $user_id,
 		'firstName' => $user_data->first_name,
 		'lastName' => $user_data->last_name,
 		'username' => $user_login,
-		'email' => $user_data->user_email
+		'email' => $user_data->user_email,
+		'createdAt' => date("n/j/Y", strtotime($registered))
 		);
 
 	$properties = array(
