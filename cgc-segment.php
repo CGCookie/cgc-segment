@@ -167,7 +167,7 @@ function cgc_segment_load_scripts() {
 		'write_key' => $options['cgc_segment_write_key']
 		);
 
-	wp_enqueue_script( 'cgc_analytics', plugins_url( __FILE__ ) . '/includes/analytics.js', array(), '3.0.1', true );
+	wp_enqueue_script( 'cgc_analytics', plugin_dir_url( __FILE__ ) . 'includes/cgc_analytics.js', array(), '3.0.1', true );
 	wp_localize_script( 'cgc_analytics', 'cgc_analytics_vars', $local_vars );
 }
 add_action( 'wp_enqueue_scripts', 'cgc_segment_load_scripts' );
