@@ -32,7 +32,7 @@ class cgcSegment {
 		}
 		require_once dirname( __FILE__ ) . "/includes/pageviews.php";
 		require_once dirname( __FILE__ ) . "/includes/user_login.php";
-		require_once dirname( __FILE__ ) . "/includes/segment_js.php";
+		// require_once dirname( __FILE__ ) . "/includes/segment_js.php";
 
 		# Setup our Segment tracking and
 		# alias to Analytics for convenience
@@ -158,3 +158,17 @@ function cgc_segment_load() {
 	}
 }
 add_action( 'plugins_loaded', 'cgc_segment_load' );
+
+function cgc_segment_load_scripts() {
+
+	$options = get_option( 'cgc_segment' );
+
+	$local_vars = array(
+		'write_key' => $options['cgc_segment_write_key']
+		);
+
+	wp_enqueue_script( 'cgc_analytics', plugins_url( __FILE__ ) . '/includes/analytics.js', array(), '3.0.1', true );
+	wp_localize_script( 'cgc_analytics', 'cgc_analytics_vars', $local_vars );
+}
+add_action( 'wp_enqueue_scripts', 'cgc_segment_load_scripts' );
+
