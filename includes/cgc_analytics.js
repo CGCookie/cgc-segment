@@ -1,4 +1,4 @@
-function cgc_analytics_js(){
+(function cgc_analytics_js(){
 
 		// Create a queue, but don't obliterate an existing one!
 		var analytics = window.analytics = window.analytics || [];
@@ -65,7 +65,7 @@ function cgc_analytics_js(){
 		  script.src = ('https:' === document.location.protocol
 			? 'https://' : 'http://')
 			+ 'cdn.segment.com/analytics.js/v1/'
-			+ cgc_segment_js_write_key + '/analytics.min.js';
+			+ key + '/analytics.min.js';
 
 		  // Insert our script next to the first script element.
 		  var first = document.getElementsByTagName('script')[0];
@@ -85,4 +85,4 @@ function cgc_analytics_js(){
 		
 		analytics.page();
 
-	  }
+	  }) ( jQuery );
