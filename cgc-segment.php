@@ -167,12 +167,15 @@ function cgc_segment_load_scripts() {
 
 	$local_vars = array(
 		'write_key' => $options['cgc_segment_write_key'],
-		'userId' => $user_id,
-		"firstName" => $user->first_name,
-		"lastName" => $user->last_name,
-		"email" => $user->user_email,
-		"username" => $user->user_login
 		);
+
+	if( is_user_logged_in() ) {
+		$local_vars['userId'] = $user_id;
+		$local_vars["firstName"] = $user->first_name;
+		$local_vars["lastName"] = $user->last_name;
+		$local_vars["email"] = $user->user_email;
+		$local_vars["username"] = $user->user_login;
+	}
 
 	wp_enqueue_script( 'cgc_analytics', plugin_dir_url( __FILE__ ) . 'includes/cgc_analytics.js', array(), '3.0.1', true );
 	wp_localize_script( 'cgc_analytics', 'cgc_analytics_vars', $local_vars );
