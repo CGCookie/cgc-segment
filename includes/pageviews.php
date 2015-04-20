@@ -8,25 +8,26 @@ function cgc_track_pageviews() {
 
 	$properties = array();
 
-	/* Ecommerce pages */
-	if( is_page( $checkout ) ) {
-		cgcSegment::page( 'Checkout', $properties );
-	}
-	if( is_page( $purchase_history_page ) && ! empty( $edd_options['purchase_history_page'] ) ) {
-		cgcSegment::page( 'Purchase History', $properties );
+	if( is_user_logged_in() ) {
+	?>
+		<script type="text/javascript">
+			analytics.identify( cgc_analytics_vars.userId, {
+				firstName: cgc_analytics_vars.firstName,
+				lastName: cgc_analytics_vars.lastName,
+				email: cgc_analytics_vars.email
+			}
+			);
+		</script>
+	<?php
 	}
 
-	if( is_page( 'membership' ) ) {
-		cgcSegment::page( 'Membership', $properties );
-	}
-	if( is_page( 'registration' ) ) {
-		cgcSegment::page( 'Registration', $properties );
-	}
-	// Hard coding Blender Baiscs for now, will later replace with admin area.
-	if( get_the_ID() == 53441 ) {
-		cgcSegment::page( 'Blender Basics', $properties);
-	}
+	?>
+	<script type="text/javascript">
+		analytics.page();
+	</script>
+
+<?php
 
 }
 
-add_action( 'wp_head', 'cgc_track_pageviews' );
+add_action( 'wp_footer', 'cgc_track_pageviews', 20 );
