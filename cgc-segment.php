@@ -162,9 +162,16 @@ add_action( 'plugins_loaded', 'cgc_segment_load' );
 function cgc_segment_load_scripts() {
 
 	$options = get_option( 'cgc_segment' );
+	$user_id = get_current_user_id();
+	$user = get_userdata( $user_id );
 
 	$local_vars = array(
-		'write_key' => $options['cgc_segment_write_key']
+		'write_key' => $options['cgc_segment_write_key'],
+		'userId' => $user_id,
+		"firstName" => $user->first_name,
+		"lastName" => $user->last_name,
+		"email" => $user->user_email,
+		"username" => $user->user_login
 		);
 
 	wp_enqueue_script( 'cgc_analytics', plugin_dir_url( __FILE__ ) . 'includes/cgc_analytics.js', array(), '3.0.1', true );
