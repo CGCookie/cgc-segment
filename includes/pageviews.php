@@ -14,7 +14,8 @@ function cgc_track_pageviews() {
 			analytics.identify( cgc_analytics_vars.userId, {
 				firstName: cgc_analytics_vars.firstName,
 				lastName: cgc_analytics_vars.lastName,
-				email: cgc_analytics_vars.email
+				email: cgc_analytics_vars.email,
+				createdAt: cgc_analytics_vars.createdAt
 			}
 			);
 		</script>
