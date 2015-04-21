@@ -179,6 +179,14 @@ function cgc_segment_load_scripts() {
 		$local_vars["createdAt"] = date("n/j/Y", strtotime($registered));
 	}
 
+	if( function_exists( 'rcp_get_subscription' ) ) {
+		$subscription = rcp_get_subscription( $user_id );
+
+		$local_vars['type'] = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
+		$local_vars['status'] = ucwords( rcp_get_status( $user_id ) );
+		$local_vars['level'] = $subscription;
+	}
+
 	wp_enqueue_script( 'cgc_analytics', plugin_dir_url( __FILE__ ) . 'includes/cgc_analytics.js', array(), '3.0.1', true );
 	wp_localize_script( 'cgc_analytics', 'cgc_analytics_vars', $local_vars );
 }

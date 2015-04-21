@@ -15,7 +15,10 @@ function cgc_track_pageviews() {
 				firstName: cgc_analytics_vars.firstName,
 				lastName: cgc_analytics_vars.lastName,
 				email: cgc_analytics_vars.email,
-				createdAt: cgc_analytics_vars.createdAt
+				createdAt: cgc_analytics_vars.createdAt,
+				type: cgc_analytics_vars.type,
+				status: cgc_analytics_vars.status,
+				level: cgc_analytics_vars.level
 			}
 			);
 		</script>
