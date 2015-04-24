@@ -18,7 +18,8 @@ function cgc_track_pageviews() {
 				createdAt: cgc_analytics_vars.createdAt,
 				type: cgc_analytics_vars.type,
 				status: cgc_analytics_vars.status,
-				level: cgc_analytics_vars.level
+				level: cgc_analytics_vars.level,
+				expiration: cgc_analytics_vars.expiration,
 			}
 			);
 		</script>

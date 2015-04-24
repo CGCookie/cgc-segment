@@ -30,6 +30,7 @@ function cgc_track_login( $user_login, $user ) {
 		$traits['type'] = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
 		$traits['status'] = ucwords( rcp_get_status( $user_id ) );
 		$traits['level'] = $subscription;
+		$traits['expiration'] = rcp_get_expiration_date( $user_id );
 
 		$properties['type'] = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
 		$properties['status'] = ucwords( rcp_get_status( $user_id ) );
