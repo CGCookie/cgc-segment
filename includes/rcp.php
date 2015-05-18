@@ -76,7 +76,73 @@ function cgc_rcp_account_upgrade_stripe( $payment_id) {
 add_action( 'rcp_stripe_signup', 'cgc_rcp_account_upgrade_stripe', 10, 2 );
 
 
-# function cgc_rcp_account_cancelled
+function cgc_rcp_track_cancelled_paypal( $user_id ) {
+
+	$user_id = get_current_user_id();
+	$user_data = get_userdata( $user_id );
+
+	$subscription = rcp_get_subscription( $user_id );
+	$expiration = rcp_get_expiration_date( $user_id );
+	$recurring = rcp_is_recurring( $user_id ) ? 'Yes' : 'No';
+
+	$traits = array(
+		'firstName' => $user_data->first_name,
+		'lastName' => $user_data->last_name,
+		'email' => $user_data->user_email,
+		'username' => $user_data->user_login,
+		'type' => 'Citizen',
+		'status' => 'Cancelled',
+		'level' => $subscription,
+		'recurring' => $recurring,
+		'expiration' => $expiration
+		);
+
+	$properties = array(
+		'type' => 'Citizen',
+		'status' => 'Cancelled',
+		'level' => $subscription,
+		'recurring' => $recurring,
+		'expiration' => $expiration,
+		);
+
+	cgcSegment::track( 'Membership Termination', $properties, $traits, $user_id );
+}
+add_action( 'rcp_ipn_subscr_cancel', 'cgc_rcp_track_cancelled_paypal' );
+
+
+function cgc_rcp_track_cancelled_stripe( $invoice ) {
+
+	$user_id = rcp_stripe_get_user_id( $invoice->customer );
+
+	$user_data = get_userdata( $user_id );
+
+	$subscription = rcp_get_subscription( $user_id );
+	$expiration = rcp_get_expiration_date( $user_id );
+	$recurring = rcp_is_recurring( $user_id ) ? 'Yes' : 'No';
+
+	$traits = array(
+		'firstName' => $user_data->first_name,
+		'lastName' => $user_data->last_name,
+		'email' => $user_data->user_email,
+		'username' => $user_data->user_login,
+		'type' => 'Citizen',
+		'status' => 'Cancelled',
+		'level' => $subscription,
+		'recurring' => $recurring,
+		'expiration' => $expiration
+		);
+
+	$properties = array(
+		'type' => 'Citizen',
+		'status' => 'Cancelled',
+		'level' => $subscription,
+		'recurring' => $recurring,
+		'expiration' => $expiration,
+		);
+
+	cgcSegment::track( 'Membership Termination', $properties, $traits, $user_id );
+}
+add_action( 'rcp_stripe_customer.subscription.deleted', 'cgc_rcp_track_cancelled_stripe' );
 
 # function cgc_rcp_payment
 
