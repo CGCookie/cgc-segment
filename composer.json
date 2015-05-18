@@ -1,6 +1,6 @@
 {
     "name": "cgcookie/cgc-segment",
-    "type": "plugin",
+    "type": "wordpress-plugin",
     "description": "Sends CGC data to segment.io",
     "keywords": [ "segment", "data", "customer", "events", "plugin"],
     "homepage": "http://cgcookie.com",
