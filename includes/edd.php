@@ -24,9 +24,9 @@ function cgc_edd_track_add_product_to_cart( $download_id, $options ) {
 		);
 
 	$properties = array(
-		"id" => $download_id,
-		"name" => get_the_title( $download_id ),
-		"price" => edd_get_cart_item_price( $download_id, $options ),
+		"id"       => $download_id,
+		"name"     => get_the_title( $download_id ),
+		"price"    => edd_get_cart_item_price( $download_id, $options ),
 		"category" => cgc_edd_get_product_category( $download_id )
 	);
 
@@ -47,8 +47,8 @@ function cgc_edd_track_remove_product_from_cart( $cart_key ) {
 	$options     = $cart_item['options'];
 
 	$properties = array(
-		"id" => $download_id,
-		"name" => get_the_title( $download_id ),
+		"id"    => $download_id,
+		"name"  => get_the_title( $download_id ),
 		"price" => edd_get_cart_item_price( $download_id, $options )
 		);
 
@@ -66,22 +66,22 @@ add_action( 'edd_pre_remove_from_cart', 'cgc_edd_track_remove_product_from_cart'
 function cgc_edd_track_purchase( $payment_id ) {
 
 	$userInfo = edd_get_payment_meta_user_info( $payment_id);
-	$user_id = get_current_user_id();
+	$user_id  = get_current_user_id();
 
 	$traits = array(
-		"userId" => is_user_logged_in() ? $user_id : session_id(),
+		"userId"    => is_user_logged_in() ? $user_id : session_id(),
 		"firstName" => $userInfo[ 'first_name' ],
-		"lastName" => $userInfo[ 'last_name' ],
-		"email" => $userInfo[ 'email' ],
+		"lastName"  => $userInfo[ 'last_name' ],
+		"email"     => $userInfo[ 'email' ],
 		);
 
 	if( ! class_exists( 'Easy_Digital_Downloads' ) ) {
 		return false;
 	}
-	$subtotal = edd_get_payment_subtotal( $payment_id );
-	$total = edd_get_payment_amount( $payment_id );
+	$subtotal  = edd_get_payment_subtotal( $payment_id );
+	$total     = edd_get_payment_amount( $payment_id );
 
-	$tax = edd_get_payment_tax();
+	$tax       = edd_get_payment_tax();
 	$discounts = edd_get_cart_discounts();
 
 	if ( edd_get_users_purchases( $user_id ) == false ) {
@@ -91,21 +91,21 @@ function cgc_edd_track_purchase( $payment_id ) {
 	}
 
 	$downloads = edd_get_payment_meta_cart_details( $payment_id );
-	$products = array();
+	$products  = array();
 
 	foreach( $downloads as $download ) {
 		$products[] = get_the_title( $download['id'] );
 	}
 
 	$properties = array(
-		"orderId" => $payment_id,
-		"total" => $subtotal,
-		"revenue" => $total,
+		"orderId"  => $payment_id,
+		"total"    => $subtotal,
+		"revenue"  => $total,
 		"currency" => "USD",
-		"tax" => $tax,
+		"tax"      => $tax,
 		"discount" => $subtotal - $total, // total - coupon amount
-		"coupon" => $discounts,
-		"repeat" => $repeat,
+		"coupon"   => $discounts,
+		"repeat"   => $repeat,
 		"products" => $products
 		);
 

@@ -45,7 +45,7 @@ class cgcSegment {
 
 		if ( empty( $user_id ) ) {
 			$user_id = get_current_user_id();
-			$user = get_userdata( $user_id );
+			$user    = get_userdata( $user_id );
 		}
 
 		# Check for traits
@@ -53,9 +53,9 @@ class cgcSegment {
 
 			$traits = array(
 				"firstName" => $user->first_name,
-				"lastName" => $user->last_name,
-				"email" => $user->user_email,
-				"username" => $user->user_login
+				"lastName"  => $user->last_name,
+				"email"     => $user->user_email,
+				"username"  => $user->user_login
 				);
 		}
 
@@ -65,8 +65,8 @@ class cgcSegment {
 
 		# User data to be passed
 		$args = array(
-			"userId" => $user_id,
-			"traits" => $traits,
+			"userId"  => $user_id,
+			"traits"  => $traits,
 			"context" => $context
 		);
 
@@ -87,9 +87,9 @@ class cgcSegment {
 		}
 
 		Analytics::track(array(
-				"userId" => $user_id,
-				"event" => $event,
-				"traits" => $traits,
+				"userId"     => $user_id,
+				"event"      => $event,
+				"traits"     => $traits,
 				"properties" => $properties
 			)
 		);
@@ -99,8 +99,8 @@ class cgcSegment {
 	public static function page( $pagename = '', $properties = array(), $traits = array() ) {
 
 		Analytics::page(array(
-			"userId" => is_user_logged_in() ? get_current_user_id() : session_id(),
-			"name" => $pagename,
+			"userId"     => is_user_logged_in() ? get_current_user_id() : session_id(),
+			"name"       => $pagename,
 			"properties" => $properties
 			)
 		);
@@ -163,7 +163,7 @@ function cgc_segment_load_scripts() {
 
 	$options = get_option( 'cgc_segment' );
 	$user_id = get_current_user_id();
-	$user = get_userdata( $user_id );
+	$user    = get_userdata( $user_id );
 
 	$local_vars = array(
 		'write_key' => $options['cgc_segment_write_key'],
@@ -172,20 +172,20 @@ function cgc_segment_load_scripts() {
 	if( is_user_logged_in() ) {
 		$registered = ($user->user_registered . "\n");
 
-		$local_vars['userId'] = $user_id;
+		$local_vars['userId']    = $user_id;
 		$local_vars["firstName"] = $user->first_name;
-		$local_vars["lastName"] = $user->last_name;
-		$local_vars["email"] = $user->user_email;
-		$local_vars["username"] = $user->user_login;
+		$local_vars["lastName"]  = $user->last_name;
+		$local_vars["email"]     = $user->user_email;
+		$local_vars["username"]  = $user->user_login;
 		$local_vars["createdAt"] = date("n/j/Y", strtotime($registered));
 	}
 
 	if( function_exists( 'rcp_get_subscription' ) ) {
 		$subscription = rcp_get_subscription( $user_id );
 
-		$local_vars['type'] = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
-		$local_vars['status'] = ucwords( rcp_get_status( $user_id ) );
-		$local_vars['level'] = $subscription;
+		$local_vars['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
+		$local_vars['status']     = ucwords( rcp_get_status( $user_id ) );
+		$local_vars['level']      = $subscription;
 		$local_vars['expiration'] = rcp_get_expiration_date( $user_id );
 	}
 

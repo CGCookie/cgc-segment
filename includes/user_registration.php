@@ -13,8 +13,8 @@ function cgc_user_registration( $entry, $user_id ) {
 	}
 
 	Analytics::track(array(
-		"userId" => $user_id,
-		"event" => "User Signup",
+		"userId"     => $user_id,
+		"event"      => "User Signup",
 		"properties" => array(
 			"subscribed_newsletter" => $subscribed
 			)
