@@ -75,6 +75,54 @@ function cgc_rcp_account_upgrade_stripe( $payment_id) {
 }
 add_action( 'rcp_stripe_signup', 'cgc_rcp_account_upgrade_stripe', 10, 2 );
 
+# Paypal upgrades.
+function cgc_rcp_account_upgrade_paypal( $payment_id) {
+
+	$user_id = get_current_user_id();
+
+	$subscription = rcp_get_subscription( $user_id );
+	$expiration = rcp_get_expiration_date( $user_id );
+	$recurring = rcp_is_recurring( $user_id ) ? 'Yes' : 'No';
+	$rcp_payments = new RCP_Payments;
+	$new_user = $rcp_payments->last_payment_of_user( $user_id );
+	$user_time = strtotime( $user->user_registered, current_time( 'timestamp' ) );
+	$renewal = ! empty( $new_user );
+	$upgrade = $user_time < $ten_min_ago && ! $renewal ? true : false;
+	$discount = '';
+
+	$traits = array(
+		'firstName' => '',
+		'lastName' => '',
+		'email' => '',
+		'username' => '',
+		'type' => 'Citizen',
+		'status' => 'Active',
+		'level' => $subscription,
+		'recurring' => $recurring,
+		'expiration' => $expiration
+		);
+
+	if( ! empty( $_REQUEST['rcp_discount'] ) ) {
+		$discount = sanitize_text_field( $_REQUEST['rcp_discount'] );
+	}
+
+	$properties = array(
+		'type' => 'Citizen',
+		'status' => 'Active',
+		'level' => $subscription,
+		'redeemed gift' => 'No',
+		'coupon' => $discount,
+		'recurring' => $recurring,
+		'expiration' => $expiration,
+		'renewal' => $renewal ? 'Yes' : 'No',
+		'Time Since Creation' => human_time_diff( $user_time, current_time( 'timestamp' ) ),
+		);
+
+	cgcSegment::track( 'Account Upgraded', $properties, $traits, $user_id );
+
+}
+add_action( 'rcp_ipn_subscr_payment', 'cgc_rcp_account_upgrade_paypal', 10, 2 );
+
 
 function cgc_rcp_track_cancelled_paypal( $user_id ) {
 
