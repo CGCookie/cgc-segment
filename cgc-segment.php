@@ -164,13 +164,14 @@ function cgc_segment_load_scripts() {
 	$options = get_option( 'cgc_segment' );
 	$user_id = get_current_user_id();
 	$user = get_userdata( $user_id );
-	$registered = ($user->user_registered . "\n");
 
 	$local_vars = array(
 		'write_key' => $options['cgc_segment_write_key'],
 		);
 
 	if( is_user_logged_in() ) {
+		$registered = ($user->user_registered . "\n");
+
 		$local_vars['userId'] = $user_id;
 		$local_vars["firstName"] = $user->first_name;
 		$local_vars["lastName"] = $user->last_name;
