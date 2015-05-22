@@ -1,32 +1,5 @@
 <?php
 
-function cgc_rcp_track_account_created( $user_id, $newsletters ) {
-
-	$user_data  = get_userdata( $user_id );
-	$registered = ($user_data->user_registered . "\n");
-
-	$traits = array(
-		'firstName' => $user_data->first_name,
-		'lastName'  => $user_data->last_name,
-		'email'     => $user_data->user_email,
-		'username'  => $user_data->user_login,
-		'type'      => 'Basic',
-		'status'    => 'Free',
-		'createdAt' => date("n/j/Y", strtotime($registered))
-		);
-
-	$properties = array(
-		'type'        => 'Basic',
-		'status'      => 'Free',
-		'newsletters' => implode( ',', $newsletters ),
-		'createdAt'   => date("n/j/Y", strtotime($registered))
-		);
-
-	cgcSegment::track( 'Account Created', $properties, $traits, $user_id );
-}
-add_action( 'cgc_rcp_account_created', 'cgc_rcp_track_account_created', 9999, 2 );
-
-
 # Stripe upgrades. This should become universal and pay payment details instead.
 function cgc_rcp_account_upgrade_stripe( $payment_id) {
 
