@@ -31,6 +31,7 @@ class cgcSegment {
 			require_once dirname( __FILE__ ) . "/includes/rcp.php";
 		}
 		require_once dirname( __FILE__ ) . "/includes/pageviews.php";
+		require_once dirname( __FILE__ ) . "/includes/user_actions.php";
 		require_once dirname( __FILE__ ) . "/includes/user_login.php";
 		// require_once dirname( __FILE__ ) . "/includes/segment_js.php";
 
