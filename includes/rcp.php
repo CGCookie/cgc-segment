@@ -1,5 +1,38 @@
 <?php
 
+
+function cgc_track_account_status_change( $old_status, $new_status ) {
+
+	$user_id = get_current_user_id();
+
+	$traits = array();
+	$properties = array(
+		'old status' => $old_status,
+		'new status' => $new_status,
+		);
+
+	// var_dump($old_status);
+	// var_dump($new_status);
+	// wp_die();
+	cgcSegment::track( 'Account Upgraded', $properties, $traits, $user_id );
+
+	if( $old_status != $new_status ) {
+
+		if( 'active' == $new_status ) {
+			// do upgrade event
+			cgcSegment::track( 'Account Upgraded', $properties, $traits, $user_id );
+		}
+
+		if ( 'cancelled' == $new_status ) {
+			// do cancelled event
+			cgcSegment::track( 'Account Cancelled', $properties, $traits, $user_id );
+		}
+
+	}
+
+}
+add_action( 'rcp_set_status', 'cgc_track_account_status_change', 999, 2 );
+
 # Stripe upgrades. This should become universal and pay payment details instead.
 function cgc_rcp_account_upgrade_stripe( $payment_id) {
 
