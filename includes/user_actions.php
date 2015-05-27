@@ -63,6 +63,44 @@ add_action( 'question_added', 'cgc_track_question_asked', 10, 2 );
 
 
 # Track Bookmarks
+function cgc_track_bookmark_added( $user_id, $post_id ) {
+
+	$flow = get_the_title( $post_id );
+
+	$properties = array(
+		'userId' => $user_id,
+		'bookmark'   => $bookmark,
+		);
+
+	$traits = array(
+		'userId'    => $user_id,
+		'bookmark'   => $bookmark,
+		);
+
+	cgcSegment::track( 'Bookmark Added', $properties, $traits, $user_id );
+
+}
+add_action( 'bookmark_added', 'cgc_track_bookmark_added', 10, 2 );
+
+
+function cgc_track_bookmark_removed( $user_id, $post_id ) {
+
+	$flow = get_the_title( $post_id );
+
+	$properties = array(
+		'userId' => $user_id,
+		'bookmark'   => $bookmark,
+		);
+
+	$traits = array(
+		'userId'    => $user_id,
+		'bookmark'   => $bookmark,
+		);
+
+	cgcSegment::track( 'Bookmark Removed', $properties, $traits, $user_id );
+
+}
+add_action( 'bookmark_removed', 'cgc_track_bookmark_removed', 10, 2 );
 
 
 # Track Images
