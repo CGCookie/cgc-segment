@@ -104,3 +104,22 @@ add_action( 'bookmark_removed', 'cgc_track_bookmark_removed', 10, 2 );
 
 
 # Track Images
+function cgc_track_image_uploaded( $user_id, $post_id ) {
+
+	$image = get_the_title( $post_id );
+
+	$properties = array(
+		'userId' => $user_id,
+		'image'   => $image,
+		);
+
+	$traits = array(
+		'userId'    => $user_id,
+		'image'   => $image,
+		);
+
+	cgcSegment::track( 'Image Uploaded', $properties, $traits, $user_id );
+
+}
+add_action( 'image_added', 'cgc_track_image_uploaded', 10, 2 );
+
