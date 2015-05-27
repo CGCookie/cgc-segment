@@ -44,11 +44,11 @@ add_action( 'flow_dropped', 'cgc_track_flows_dropped', 10, 2 );
 # Track Questions
 function cgc_track_question_asked( $user_id, $comment_id ) {
 
-	$question = get_the_title( $comment_id );
+	$question = get_comment( $comment_id );
 
 	$properties = array(
 		'userId' => $user_id,
-		'question'   => $question,
+		'question'   => $question->comment_content,
 		);
 
 	$traits = array(
