@@ -131,13 +131,13 @@ function cgc_track_interests_updated( $use_id, $main_interests, $sub_interests )
 
 	$properties = array(
 		'userId' => $user_id,
-		'subjects' => $subjects,
-		'topics' => $topics,
+		'subjects' => implode( ',', $subjects),
+		'topics' => implode( ',', $topics),
 		);
 	$traits = array(
 		'userId' => $user_id,
-		'subjects' => $subjects,
-		'topics' => $topics,
+		'subjects' => implode( ',', $subjects),
+		'topics' => implode( ',', $topics),
 		);
 
 	cgcSegment::track( 'Interests Updated', $properties, $traits, $user_id );
