@@ -125,19 +125,19 @@ add_action( 'image_added', 'cgc_track_image_uploaded', 10, 2 );
 
 
 # Track user interests
-function cgc_track_interests_updated( $use_id, $main_interests, $sub_interests ) {
-	$subjects = $main_interests;
-	$topics = $sub_interests;
+function cgc_track_interests_updated( $user_id, $main_interests, $sub_interests ) {
+	$subjects = implode( ', ', $main_interests );
+	$topics = implode( ', ', $sub_interests );
 
 	$properties = array(
 		'userId'   => $user_id,
-		'subjects' => implode( ',', $subjects),
-		'topics'   => implode( ',', $topics),
+		'subjects' => $subjects,
+		'topics'   => $topics,
 		);
 	$traits = array(
 		'userId'   => $user_id,
-		'subjects' => implode( ',', $subjects),
-		'topics'   => implode( ',', $topics),
+		'subjects' => $subjects,
+		'topics'   => $topics,
 		);
 
 	cgcSegment::track( 'Interests Updated', $properties, $traits, $user_id );
