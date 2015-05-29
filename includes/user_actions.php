@@ -15,6 +15,7 @@ function cgc_track_flows_enrolled( $user_id, $post_id ) {
 		'flow'   => $flow
 		);
 
+	cgcSegment::identify_user( $user_id, $traits );
 	cgcSegment::track( 'Enrolled in Flow', $properties, $traits, $user_id );
 
 }
@@ -35,6 +36,7 @@ function cgc_track_flows_dropped( $user_id, $post_id ) {
 		'flow'   => $flow
 		);
 
+	cgcSegment::identify_user( $user_id, $traits );
 	cgcSegment::track( 'Dropped Flow', $properties, $traits, $user_id );
 
 }
@@ -56,6 +58,7 @@ function cgc_track_question_asked( $user_id, $comment_id ) {
 		'question' => $question,
 		);
 
+	cgcSegment::identify_user( $user_id, $traits );
 	cgcSegment::track( 'Asked Question', $properties, $traits, $user_id );
 
 }
@@ -140,6 +143,7 @@ function cgc_track_interests_updated( $user_id, $main_interests, $sub_interests 
 		'topics'   => $topics,
 		);
 
+	cgcSegment::identify_user( $user_id, $traits );
 	cgcSegment::track( 'Interests Updated', $properties, $traits, $user_id );
 }
 add_action( 'learning_interests_saved', 'cgc_track_interests_updated', 10, 3 );
