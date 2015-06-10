@@ -1,24 +1,30 @@
 <?php
 /*
 	User Account Functions
-// */
-function cgc_user_registration( $entry, $user_id ) {
+ */
+function cgc_track_user_registration( $user_id ) {
 
-	$user_id = self::identify_user();
+	$user_data  = get_userdata( $user_id );
+	$registered = ($user_data->user_registered . "\n");
 
-	if ( $entry["4"] == true ) {
-		$subscribed = true;
-	} else {
-		$subscribed = false;
-	}
+	$status = ucwords( rcp_get_status( $user_id ) );
 
-	Analytics::track(array(
-		"userId"     => $user_id,
-		"event"      => "User Signup",
-		"properties" => array(
-			"subscribed_newsletter" => $subscribed
-			)
-		)
-	);
+	$traits = array(
+		'firstName' => $user_data->first_name,
+		'lastName'  => $user_data->last_name,
+		'email'     => $user_data->user_email,
+		'username'  => $user_data->user_login,
+		'status'    => $status,
+		'createdAt' => date("n/j/Y", strtotime($registered))
+		);
+
+	$properties = array(
+		'status'      => $status,
+		'createdAt'   => date("n/j/Y", strtotime($registered))
+		);
+
+
+	cgcSegment::identify_user( $user_id, $traits );
+	cgcSegment::track( 'Account Created', $properties, $traits, $user_id );
 }
-add_action( 'gform_after_submission_1', 'cgc_user_registration', 10, 2);
+add_action( 'user_register', 'cgc_track_user_registration', 10, 1);
