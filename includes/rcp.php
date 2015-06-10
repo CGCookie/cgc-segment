@@ -1,34 +1,46 @@
 <?php
 
 
-function cgc_track_account_status_change( $old_status, $new_status ) {
+function cgc_track_account_status_change( $new_status, $user_id ) {
 
-	$user_id = get_current_user_id();
+	$subscription = rcp_get_subscription( $user_id );
+	$expiration   = rcp_get_expiration_date( $user_id );
+	$recurring    = rcp_is_recurring( $user_id ) ? 'Yes' : 'No';
 
-	$traits = array();
+	$traits = array(
+		'userId'     => $user_id,
+		'status'     => ucwords( $new_status ),
+		'level'      => $subscription,
+		'recurring'  => $recurring,
+		'expiration' => $expiration,
+		);
 	$properties = array(
-		'old status' => $old_status,
-		'new status' => $new_status,
+		'status'     => ucwords( $new_status ),
+		'level'      => $subscription,
+		'recurring'  => $recurring,
+		'expiration' => $expiration,
 		);
 
 	// var_dump($old_status);
 	// var_dump($new_status);
 	// wp_die();
-	cgcSegment::track( 'Account Upgraded', $properties, $traits, $user_id );
+	// cgcSegment::track( 'Account Upgraded', $properties, $traits, $user_id );
 
-	if( $old_status != $new_status ) {
+	// cgcSegment::identify_user( $user_id, $traits );
+	if( 'active' == $new_status ) {
+		// do upgrade event
+		cgcSegment::track( 'Account Upgraded', $properties, $traits, $user_id );
 
-		if( 'active' == $new_status ) {
-			// do upgrade event
-			cgcSegment::track( 'Account Upgraded', $properties, $traits, $user_id );
-		}
+	} elseif ( 'expired' == $new_status ) {
+		// do cancelled event
+		cgcSegment::track( 'Account Expired', $properties, $traits, $user_id );
 
-		if ( 'cancelled' == $new_status ) {
-			// do cancelled event
-			cgcSegment::track( 'Account Cancelled', $properties, $traits, $user_id );
-		}
+	} elseif ( 'cancelled' == $new_status ) {
+		// do cancelled event
+		cgcSegment::track( 'Account Cancelled', $properties, $traits, $user_id );
 
 	}
+
 
 }
 add_action( 'rcp_set_status', 'cgc_track_account_status_change', 999, 2 );
