@@ -2,7 +2,7 @@
 
 ## Track account status changes
 
-function cgc_track_account_status_change( $new_status, $user_id ) {
+function cgc_track_account_status_change( $new_status, $user_id, $old_status ) {
 
 	$subscription = rcp_get_subscription( $user_id );
 	$expiration   = rcp_get_expiration_date( $user_id );
@@ -30,7 +30,7 @@ function cgc_track_account_status_change( $new_status, $user_id ) {
 		// do cancelled event
 		cgcSegment::track( 'Account Expired', $properties, $traits, $user_id );
 
-	} elseif ( 'cancelled' == $new_status ) {
+	} elseif ( 'active' == $old_status && 'cancelled' == $new_status ) {
 		// do cancelled event
 		cgcSegment::track( 'Account Cancelled', $properties, $traits, $user_id );
 
@@ -38,5 +38,5 @@ function cgc_track_account_status_change( $new_status, $user_id ) {
 
 
 }
-add_action( 'rcp_set_status', 'cgc_track_account_status_change', 999, 2 );
+add_action( 'rcp_set_status', 'cgc_track_account_status_change', 999, 3 );
 
