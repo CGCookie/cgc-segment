@@ -25,7 +25,8 @@ class cgcSegment {
 		require_once dirname( __FILE__ ) . "/analytics-php/lib/Segment.php";
 
 		if( class_exists( 'Easy_Digital_Downloads' ) ) {
-			require_once dirname( __FILE__ ) . "/includes/edd.php";
+			require_once dirname( __FILE__ ) . "/includes/edd_events.php";
+			require_once dirname( __FILE__ ) . "/includes/edd_pageviews.php";
 		}
 		if( function_exists( 'rcp_is_active' ) ) {
 			require_once dirname( __FILE__ ) . "/includes/rcp.php";
