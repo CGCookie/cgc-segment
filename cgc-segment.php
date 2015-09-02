@@ -35,7 +35,6 @@ class cgcSegment {
 		require_once dirname( __FILE__ ) . "/includes/user_actions.php";
 		require_once dirname( __FILE__ ) . "/includes/user_login.php";
 		require_once dirname( __FILE__ ) . "/includes/user_registration.php";
-		// require_once dirname( __FILE__ ) . "/includes/segment_js.php";
 		require_once dirname( __FILE__ ) . "/includes/optimizely_js.php";
 
 		# Setup our Segment tracking and
