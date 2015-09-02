@@ -20,6 +20,8 @@ function cgc_track_pageviews() {
 				status: cgc_analytics_vars.status,
 				level: cgc_analytics_vars.level,
 				expiration: cgc_analytics_vars.expiration,
+				subjects: cgc_analytics_vars.subjects,
+				topics: cgc_analytics_vars.topics,
 			}
 			);
 		</script>
