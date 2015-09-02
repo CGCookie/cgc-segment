@@ -1,5 +1,42 @@
 <?php
 
+# Track Exercise actions
+function cgc_track_exercise_submitted( $user_id, $submission_id, $type ) {
+
+	$exercise_parent = get_post_meta( $submission_id, ‘_cgc_exercise_submission_linked_to’, true);
+	$exercise = get_the_title( $exercise_parent )
+
+	$properties = array(
+		'userId' => $user_id,
+		'exercise'   => $exercise,
+		'exerciseType' => $type
+		);
+
+	$traits = array(
+		'userId' => $user_id,
+		);
+
+	cgcSegment::identify_user( $user_id, $traits );
+	cgcSegment::track( 'Exercise Submitted', $properties, $traits, $user_id );
+}
+add_action( 'cgc_exercise_submitted', 'cgc_track_exercise_submitted', 10, 3 );
+
+function cgc_track_exercise_deleted( $user_id, $submissions ) {
+
+	$properties = array(
+		'userId' => $user_id,
+		'exercises'   => $submissions,
+		);
+
+	$traits = array(
+		'userId' => $user_id,
+		);
+
+	cgcSegment::identify_user( $user_id, $traits );
+	cgcSegment::track( 'Exercise Deleted', $properties, $traits, $user_id );
+}
+add_action( 'cgc_exercise_deleted', 'cgc_track_exercise_deleted', 10, 2 );
+
 # Track Flows
 function cgc_track_flows_enrolled( $user_id, $post_id ) {
 
