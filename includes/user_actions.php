@@ -4,7 +4,7 @@
 function cgc_track_exercise_submitted( $user_id, $submission_id, $type ) {
 
 	$exercise_parent = get_post_meta( $submission_id, ‘_cgc_exercise_submission_linked_to’, true);
-	$exercise = get_the_title( $exercise_parent )
+	$exercise = get_the_title( $exercise_parent );
 
 	$properties = array(
 		'userId' => $user_id,
