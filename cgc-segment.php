@@ -182,15 +182,17 @@ function cgc_segment_load_scripts() {
 		$local_vars["username"]  = $user->user_login;
 		$local_vars["createdAt"] = date("n/j/Y", strtotime($registered));
 		$local_vars["userRoles"] = implode( ', ', $user->roles);
+	}
 
 		# Get user's interests
+	if( class_exists( 'CGC_Core' ) ) {
 		$subjects = get_user_meta( $user_id, 'learning_interests', true );
 		$topics   = get_user_meta( $user_id, 'learning_interests_secondary', true );
 
 		$local_vars['subjects']  = implode( ', ', $subjects );
 		$local_vars['topics']    = implode( ', ', $topics );
-
 	}
+
 
 	if( function_exists( 'rcp_get_subscription' ) ) {
 		$subscription = rcp_get_subscription( $user_id );
