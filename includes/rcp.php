@@ -40,3 +40,26 @@ function cgc_track_account_status_change( $new_status, $user_id, $old_status ) {
 }
 add_action( 'rcp_set_status', 'cgc_track_account_status_change', 999, 3 );
 
+# Track new RCP subscription payments
+function cgc_track_subscription_payment( $payment_id, $args ) {
+
+	$user_id = $args['user_id'];
+
+	$traits = array(
+		'userId'             => $user_id,
+		);
+
+	$properties = array(
+			'level'          => $args['subscription'],
+			'date'           => date("n/j/Y", strtotime( $args['date'] )),
+			'revenue'        => intval( $args['amount'] ),
+			'user_id'        => $user_id,
+			'payment_type'   => $args['payment_type'],
+			'transaction_id' => $args['transaction_id'],
+			'payment_status' => $args['status'],
+			);
+
+	cgcSegment::track( 'Subscription Payment', $properties, $traits, $user_id );
+
+}
+add_action( 'rcp_insert_payment', 'cgc_track_subscription_payment', 10, 2 );
