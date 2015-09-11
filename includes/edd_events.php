@@ -26,7 +26,7 @@ function cgc_edd_track_add_product_to_cart( $download_id, $options ) {
 	$properties = array(
 		"id"       => $download_id,
 		"name"     => get_the_title( $download_id ),
-		"price"    => edd_get_cart_item_price( $download_id, $options ),
+		"price"    => intval( edd_get_cart_item_price( $download_id, $options ) ),
 		"category" => cgc_edd_get_product_category( $download_id )
 	);
 
@@ -49,7 +49,7 @@ function cgc_edd_track_remove_product_from_cart( $cart_key ) {
 	$properties = array(
 		"id"    => $download_id,
 		"name"  => get_the_title( $download_id ),
-		"price" => edd_get_cart_item_price( $download_id, $options )
+		"price" => intval( edd_get_cart_item_price( $download_id, $options ) )
 		);
 
 	cgcSegment::track( 'Removed Product', $properties, $traits, $user_id );
@@ -99,11 +99,11 @@ function cgc_edd_track_purchase( $payment_id ) {
 
 	$properties = array(
 		"orderId"  => $payment_id,
-		"total"    => $subtotal,
-		"revenue"  => $total,
+		"total"    => intval( $subtotal ),
+		"revenue"  => intval( $total ),
 		"currency" => "USD",
-		"tax"      => $tax,
-		"discount" => $subtotal - $total, // total - coupon amount
+		"tax"      => intval( $tax ),
+		"discount" => intval( $subtotal - $total ), // total - coupon amount
 		"coupon"   => $discounts,
 		"repeat"   => $repeat,
 		"products" => $products
