@@ -56,7 +56,7 @@ function cgc_track_flows_enrolled( $user_id, $post_id ) {
 	cgcSegment::track( 'Enrolled in Flow', $properties, $traits, $user_id );
 
 }
-add_action( 'flow_enrolled', 'cgc_track_flows_enrolled', 10, 2 );
+add_action( 'flow_enrolled', 'cgc_track_flows_enrolled', 12, 2 );
 
 
 function cgc_track_flows_dropped( $user_id, $post_id ) {
