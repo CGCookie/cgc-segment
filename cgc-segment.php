@@ -62,6 +62,12 @@ class cgcSegment {
 				);
 		}
 
+		// Global traits
+		$traits['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
+		$traits['status']     = ucwords( rcp_get_status( $user_id ) );
+		$traits['level']      = rcp_get_subscription( $user_id );
+		$traits['expiration'] = rcp_get_expiration_date( $user_id );
+
 		$context = array(
 			'ip' => $_SERVER['REMOTE_ADDR']
 			);
@@ -88,6 +94,12 @@ class cgcSegment {
 		if ( empty( $user_id ) ) {
 			$user_id = session_id();
 		}
+
+		// Global properties
+		$properties['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
+		$properties['status']     = ucwords( rcp_get_status( $user_id ) );
+		$properties['level']      = rcp_get_subscription( $user_id );
+		$properties['expiration'] = rcp_get_expiration_date( $user_id );
 
 		Analytics::track(array(
 				"userId"     => $user_id,
