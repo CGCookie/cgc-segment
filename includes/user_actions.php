@@ -56,7 +56,7 @@ function cgc_track_flows_enrolled( $user_id, $post_id ) {
 	cgcSegment::track( 'Enrolled in Flow', $properties, $traits, $user_id );
 
 }
-add_action( 'flow_enrolled', 'cgc_track_flows_enrolled', 10, 2 );
+add_action( 'flow_enrolled', 'cgc_track_flows_enrolled', 20, 2 );
 
 
 function cgc_track_flows_dropped( $user_id, $post_id ) {
@@ -77,7 +77,7 @@ function cgc_track_flows_dropped( $user_id, $post_id ) {
 	cgcSegment::track( 'Dropped Flow', $properties, $traits, $user_id );
 
 }
-add_action( 'flow_dropped', 'cgc_track_flows_dropped', 10, 2 );
+add_action( 'flow_dropped', 'cgc_track_flows_dropped', 20, 2 );
 
 
 # Track Questions

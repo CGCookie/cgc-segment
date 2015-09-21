@@ -4,7 +4,7 @@
  * Description: Sends CGC data to segment.io
  * Author: Jonathan Williamson
  * Author URI: http://cgcookie.com
- * Version: 1.2.0
+ * Version: 1.2.1
  */
 
 $plugin_url = WP_PLUGIN_URL . '/cgc-segment';
@@ -186,11 +186,11 @@ function cgc_segment_load_scripts() {
 
 		# Get user's interests
 	if( class_exists( 'CGC_Core' ) ) {
-		$subjects = get_user_meta( $user_id, 'learning_interests', true );
-		$topics   = get_user_meta( $user_id, 'learning_interests_secondary', true );
+		$subjects = get_user_meta( $user_id, 'learning_interests' );
+		$topics   = get_user_meta( $user_id, 'learning_interests_secondary' );
 
-		$local_vars['subjects']  = implode( ', ', $subjects );
-		$local_vars['topics']    = implode( ', ', $topics );
+		$local_vars['subjects']  = implode( ', ', $subjects[0] );
+		$local_vars['topics']    = implode( ', ', $topics[0] );
 	}
 
 
