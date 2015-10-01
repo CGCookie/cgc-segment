@@ -201,8 +201,12 @@ function cgc_segment_load_scripts() {
 		$subjects = get_user_meta( $user_id, 'learning_interests' );
 		$topics   = get_user_meta( $user_id, 'learning_interests_secondary' );
 
-		$local_vars['subjects']  = implode( ', ', $subjects[0] );
-		$local_vars['topics']    = implode( ', ', $topics[0] );
+		if (!empty( $local_vars['subjects'] ) ) {
+			$local_vars['subjects']  = implode( ', ', $subjects[0] );
+		}
+		if (!empty( $local_vars['topics'] ) ) {
+			$local_vars['topics']    = implode( ', ', $topics[0] );
+		}
 	}
 
 
