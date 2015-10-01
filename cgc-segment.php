@@ -198,15 +198,12 @@ function cgc_segment_load_scripts() {
 
 		# Get user's interests
 	if( class_exists( 'CGC_Core' ) ) {
-		$subjects = get_user_meta( $user_id, 'learning_interests' );
-		$topics   = get_user_meta( $user_id, 'learning_interests_secondary' );
+		$subjects = get_user_meta( $user_id, 'learning_interests', true );
+		$topics   = get_user_meta( $user_id, 'learning_interests_secondary', true );
 
-		if (!empty( $local_vars['subjects'] ) ) {
-			$local_vars['subjects']  = implode( ', ', $subjects[0] );
-		}
-		if (!empty( $local_vars['topics'] ) ) {
-			$local_vars['topics']    = implode( ', ', $topics[0] );
-		}
+		$local_vars['subjects'] = !empty( $subjects ) ? implode( ', ', $subjects[0] ) : '';
+		$local_vars['topics']   = !empty( $topics ) ? implode( ', ', $topics[0] ) : '';
+
 	}
 
 

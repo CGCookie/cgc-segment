@@ -166,8 +166,8 @@ add_action( 'image_added', 'cgc_track_image_uploaded', 10, 2 );
 
 # Track user interests
 function cgc_track_interests_updated( $user_id, $main_interests, $sub_interests ) {
-	$subjects = implode( ', ', $main_interests );
-	$topics = implode( ', ', $sub_interests );
+	$subjects = !empty( $main_interests ) ? implode( ', ', $main_interests ) : '';
+	$topics   = !empty( $sub_interests ) ? implode( ', ', $sub_interests ) : '';
 
 	$properties = array(
 		'userId'   => $user_id,
