@@ -63,3 +63,23 @@ function cgc_track_subscription_payment( $payment_id, $args ) {
 
 }
 add_action( 'rcp_insert_payment', 'cgc_track_subscription_payment', 10, 2 );
+
+# Track Stripe Checkout signups
+function cgc_track_stripe_checkout( $user_id, $subscription ) {
+
+	$user_id = $user_data['id'];
+
+	$properties = array(
+		'userID' => $user_id,
+		'level'  => $subscription,
+	);
+
+	$traits = array(
+		'userID' => $user_id,
+	);
+
+	cgcSegment::track( 'Stripe Checkout Signup', $properties, $traits, $user_id );
+
+}
+add_action( 'rcp_stripe_checkout_signup', 'cgc_track_stripe_checkout', 20, 2 );
+
