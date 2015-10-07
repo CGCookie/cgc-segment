@@ -37,6 +37,31 @@ function cgc_track_exercise_deleted( $user_id, $submissions ) {
 }
 add_action( 'cgc_exercise_deleted', 'cgc_track_exercise_deleted', 10, 2 );
 
+
+# Track exercise votes
+function cgc_track_exercise_vote( $submission_id, $user_id, $vote ) {
+
+	$exercise_parent = get_post_meta( $submission_id, '_cgc_exercise_submission_linked_to', true );
+	$exercise        = get_the_title( $exercise_parent );
+	$exercise_type   = get_post_meta( $exercise_parent, '_cgc_edu_exercise_type', true );
+
+	$properties = array(
+		'userId'       => $user_id,
+		'exercise'     => $exercise,
+		'exerciseType' => $exercise_type,
+		'vote'         => $vote,
+		);
+
+	$traits = array(
+		'userId' => $user_id,
+		);
+
+	cgcSegment::identify_user( $user_id, $traits );
+	cgcSegment::track( 'Exercise Vote', $properties, $traits, $user_id );
+}
+add_action( 'cgc_edu_exercise_voted', 'cgc_track_exercise_vote', 10, 3 );
+
+
 # Track Flows
 function cgc_track_flows_enrolled( $user_id, $post_id ) {
 
