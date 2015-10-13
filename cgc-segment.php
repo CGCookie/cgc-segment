@@ -50,8 +50,11 @@ class cgcSegment {
 			$user_id = get_current_user_id();
 		}
 
-		$user = get_userdata( $user_id );
-		$registered = ( $user->user_registered . "\n" );
+		$user            = get_userdata( $user_id );
+		$registered      = ( $user->user_registered . "\n" );
+		$is_group_member = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->is_group_member( $user_id ) : false;
+		$group_role      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_role( $user_id ) : 'member';
+		$group_name      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_name( $user_id ) : false;
 
 		# Check for traits
 		if( empty( $traits ) && is_user_logged_in() ) {
@@ -77,6 +80,11 @@ class cgcSegment {
 			$traits['betaUser']   = cgcUserAPI::is_user_beta_user( $user_id );
 		}
 
+		if( $is_group_member ) {
+			$traits['group']     = $group_name;
+			$traits['groupRole'] = $group_role;
+		}
+
 		$context = array(
 			'ip' => $_SERVER['REMOTE_ADDR']
 			);
@@ -100,13 +108,10 @@ class cgcSegment {
 		}
 
 		// Group membership stuff
-		$is_group_member = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->is_group_member( $user_id ) : false;
 		$group_id        = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_id( $user_id ) : 'null';
 		$group_name      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_name( $user_id ) : false;
-		$group_role      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_role( $user_id ) : 'member';
 
-		$traits['name']      = $group_name;
-		$traits['groupRole'] = $group_role;
+		$traits['name']  = $group_name;
 
 		Analytics::group(array(
 			"userId"     => $user_id,
