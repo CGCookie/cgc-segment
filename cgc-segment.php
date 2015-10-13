@@ -92,6 +92,29 @@ class cgcSegment {
 		return $args;
 	}
 
+	public static function identify_group_user( $user_id = '', $traits= array() ) {
+
+
+		if ( empty( $user_id ) ) {
+			$user_id = get_current_user_id();
+		}
+
+		// Group membership stuff
+		$is_group_member = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->is_group_member( $user_id ) : false;
+		$group_id        = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_id( $user_id ) : 'null';
+		$group_name      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_name( $user_id ) : false;
+		$group_role      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_role( $user_id ) : 'member';
+
+		$traits['name']      = $group_name;
+		$traits['groupRole'] = $group_role;
+
+		Analytics::group(array(
+			"userId"     => $user_id,
+			"groupId"    => $group_id,
+			"traits"     => $traits,
+			)
+		);
+	}
 
 	public static function track( $event = '', $user_id = '', $properties = array(), $traits = array() ) {
 
@@ -222,7 +245,6 @@ function cgc_segment_load_scripts() {
 
 	}
 
-
 	if( function_exists( 'rcp_get_subscription' ) ) {
 		$subscription = rcp_get_subscription( $user_id );
 
@@ -231,6 +253,20 @@ function cgc_segment_load_scripts() {
 		$local_vars['level']      = $subscription;
 		$local_vars['expiration'] = rcp_get_expiration_date( $user_id );
 	}
+
+	// Group membership stuff
+	$is_group_member = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->is_group_member( $user_id ) : false;
+	$group_id        = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_id( $user_id ) : 'null';
+	$group_name      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_name( $user_id ) : false;
+	$group_role      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_role( $user_id ) : 'member';
+
+	if( $is_group_member ) {
+
+		$local_vars['groupId']   = $group_id;
+		$local_vars['groupName'] = $group_name;
+		$local_vars['groupRole'] = $group_role;
+	}
+
 
 	wp_enqueue_script( 'cgc_analytics', plugin_dir_url( __FILE__ ) . 'includes/cgc_analytics.js', array(), '3.0.1', true );
 	wp_localize_script( 'cgc_analytics', 'cgc_analytics_vars', $local_vars );
