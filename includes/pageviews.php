@@ -24,7 +24,9 @@ function cgc_track_pageviews() {
 				expiration: cgc_analytics_vars.expiration,
 				subjects: cgc_analytics_vars.subjects,
 				topics: cgc_analytics_vars.topics,
-				betaUser: Boolean( cgc_analytics_vars.betaUser )
+				betaUser: Boolean( cgc_analytics_vars.betaUser ),
+				group: cgc_analytics_vars.groupName,
+				groupRole: cgc_analytics_vars.groupRole
 				}
 			);
 		</script>
@@ -35,8 +37,6 @@ function cgc_track_pageviews() {
 			<script type="text/javascript">
 				analytics.group( cgc_analytics_vars.groupId, {
 					name: cgc_analytics_vars.groupName,
-					userId: cgc_analytics_vars.user_id,
-					groupRole: cgc_analytics_vars.group_role
 					}
 				);
 			</script>
