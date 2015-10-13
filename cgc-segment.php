@@ -95,7 +95,7 @@ class cgcSegment {
 		}
 
 		if ( empty( $user_id ) ) {
-			$user_id = session_id();
+			$user_id = is_user_logged_in() ? get_current_user_id() : session_id();
 		}
 
 		// Global properties for EDU
@@ -208,6 +208,7 @@ function cgc_segment_load_scripts() {
 
 		$local_vars['subjects'] = !empty( $subjects ) ? implode( ', ', $subjects ) : '';
 		$local_vars['topics']   = !empty( $topics ) ? implode( ', ', $topics ) : '';
+		$local_vars['betaUser'] = cgcUserAPI::is_user_beta_user( $user_id );
 
 	}
 
