@@ -10,7 +10,7 @@ function cgc_track_login( $user_login, $user ) {
 	cgcSegment::track( 'User Login', $user_id );
 
 	if( $is_group_member ) {
-		cgcSegment::identify_group_user( $user_id );
+		cgcSegment::identify_group( $user_id );
 	}
 
 }

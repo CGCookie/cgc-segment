@@ -92,7 +92,7 @@ class cgcSegment {
 		return $args;
 	}
 
-	public static function identify_group_user( $user_id = '', $traits= array() ) {
+	public static function identify_group( $user_id = '', $traits= array() ) {
 
 
 		if ( empty( $user_id ) ) {
