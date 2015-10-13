@@ -48,8 +48,9 @@ class cgcSegment {
 
 		if ( empty( $user_id ) ) {
 			$user_id = get_current_user_id();
-			$user    = get_userdata( $user_id );
 		}
+
+		$user = get_userdata( $user_id );
 
 		# Check for traits
 		if( empty( $traits ) && is_user_logged_in() ) {
