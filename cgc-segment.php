@@ -71,6 +71,10 @@ class cgcSegment {
 			$traits['expiration'] = rcp_get_expiration_date( $user_id );
 		}
 
+		if( class_exists( 'cgcUserAPI') ) {
+			$traits['betaUser']   = cgcUserAPI::is_user_beta_user( $user_id );
+		}
+
 		$context = array(
 			'ip' => $_SERVER['REMOTE_ADDR']
 			);
@@ -104,6 +108,10 @@ class cgcSegment {
 			$properties['status']     = ucwords( rcp_get_status( $user_id ) );
 			$properties['level']      = rcp_get_subscription( $user_id );
 			$properties['expiration'] = rcp_get_expiration_date( $user_id );
+		}
+
+		if( class_exists( 'cgcUserAPI') ) {
+			$properties['betaUser']   = cgcUserAPI::is_user_beta_user( $user_id );
 		}
 
 		Analytics::track(array(

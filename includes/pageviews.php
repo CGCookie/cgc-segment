@@ -23,6 +23,7 @@ function cgc_track_pageviews() {
 				expiration: expiration.toUTCString(),
 				subjects: cgc_analytics_vars.subjects,
 				topics: cgc_analytics_vars.topics,
+				betaUser: Boolean( cgc_analytics_vars.betaUser )
 			}
 			);
 		</script>
