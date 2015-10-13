@@ -29,6 +29,6 @@ function cgc_track_user_registration( $user_id ) {
 	}
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'Account Created', $properties, $traits, $user_id );
+	cgcSegment::track( 'Account Created', $user_id $properties, $traits );
 }
 add_action( 'user_register', 'cgc_track_user_registration', 10, 1);

@@ -51,6 +51,7 @@ class cgcSegment {
 		}
 
 		$user = get_userdata( $user_id );
+		$registered = ( $user->user_registered . "\n" );
 
 		# Check for traits
 		if( empty( $traits ) && is_user_logged_in() ) {
@@ -59,7 +60,8 @@ class cgcSegment {
 				"firstName" => $user->first_name,
 				"lastName"  => $user->last_name,
 				"email"     => $user->user_email,
-				"username"  => $user->user_login
+				"username"  => $user->user_login,
+				'createdAt' => date( "n/j/Y", strtotime( $registered ) )
 				);
 		}
 
@@ -91,7 +93,7 @@ class cgcSegment {
 	}
 
 
-	public static function track( $event = '', $properties = array(), $traits = array(), $user_id = '' ) {
+	public static function track( $event = '', $user_id = '', $properties = array(), $traits = array() ) {
 
 		# If no event name is passed, return
 		if( empty( $event ) ) {
@@ -99,7 +101,7 @@ class cgcSegment {
 		}
 
 		if ( empty( $user_id ) ) {
-			$user_id = is_user_logged_in() ? get_current_user_id() : session_id();
+			$user_id = get_current_user_id();
 		}
 
 		// Global properties for EDU
