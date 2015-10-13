@@ -17,7 +17,7 @@ function cgc_track_exercise_submitted( $user_id, $submission_id, $type ) {
 		);
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'Exercise Submitted', $user_id $properties, $traits );
+	cgcSegment::track( 'Exercise Submitted', $user_id, $properties, $traits );
 }
 add_action( 'cgc_exercise_submitted', 'cgc_track_exercise_submitted', 10, 3 );
 
@@ -33,7 +33,7 @@ function cgc_track_exercise_deleted( $user_id, $submissions ) {
 		);
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'Exercise Deleted', $user_id $properties, $traits );
+	cgcSegment::track( 'Exercise Deleted', $user_id, $properties, $traits );
 }
 add_action( 'cgc_exercise_deleted', 'cgc_track_exercise_deleted', 10, 2 );
 
@@ -57,7 +57,7 @@ function cgc_track_exercise_vote( $submission_id, $user_id, $vote ) {
 		);
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'Exercise Vote', $user_id $properties, $traits );
+	cgcSegment::track( 'Exercise Vote', $user_id, $properties, $traits );
 }
 add_action( 'cgc_edu_exercise_voted', 'cgc_track_exercise_vote', 10, 3 );
 
@@ -78,7 +78,7 @@ function cgc_track_flows_enrolled( $user_id, $post_id ) {
 		);
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'Enrolled in Flow', $user_id $properties, $traits );
+	cgcSegment::track( 'Enrolled in Flow', $user_id, $properties, $traits );
 
 }
 add_action( 'flow_enrolled', 'cgc_track_flows_enrolled', 20, 2 );
@@ -99,7 +99,7 @@ function cgc_track_flows_dropped( $user_id, $post_id ) {
 		);
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'Dropped Flow', $user_id $properties, $traits );
+	cgcSegment::track( 'Dropped Flow', $user_id, $properties, $traits );
 
 }
 add_action( 'flow_dropped', 'cgc_track_flows_dropped', 20, 2 );
@@ -121,7 +121,7 @@ function cgc_track_question_asked( $user_id, $comment_id ) {
 		);
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'Asked Question', $user_id $properties, $traits );
+	cgcSegment::track( 'Asked Question', $user_id, $properties, $traits );
 
 }
 add_action( 'question_added', 'cgc_track_question_asked', 10, 2 );
@@ -142,7 +142,7 @@ function cgc_track_bookmark_added( $user_id, $post_id ) {
 		'bookmark' => $bookmark,
 		);
 
-	cgcSegment::track( 'Bookmark Added', $user_id $properties, $traits );
+	cgcSegment::track( 'Bookmark Added', $user_id, $properties, $traits );
 
 }
 add_action( 'bookmark_added', 'cgc_track_bookmark_added', 10, 2 );
@@ -162,7 +162,7 @@ function cgc_track_bookmark_removed( $user_id, $post_id ) {
 		'bookmark' => $bookmark,
 		);
 
-	cgcSegment::track( 'Bookmark Removed', $user_id $properties, $traits );
+	cgcSegment::track( 'Bookmark Removed', $user_id, $properties, $traits );
 
 }
 add_action( 'bookmark_removed', 'cgc_track_bookmark_removed', 10, 2 );
@@ -183,7 +183,7 @@ function cgc_track_image_uploaded( $user_id, $post_id ) {
 		'image'  => $image,
 		);
 
-	cgcSegment::track( 'Image Uploaded', $user_id $properties, $traits );
+	cgcSegment::track( 'Image Uploaded', $user_id, $properties, $traits );
 
 }
 add_action( 'image_added', 'cgc_track_image_uploaded', 10, 2 );
@@ -206,7 +206,7 @@ function cgc_track_interests_updated( $user_id, $main_interests, $sub_interests 
 		);
 
 	cgcSegment::identify_user( $user_id, $traits );
-	cgcSegment::track( 'Interests Updated', $user_id $properties, $traits );
+	cgcSegment::track( 'Interests Updated', $user_id, $properties, $traits );
 }
 add_action( 'learning_interests_saved', 'cgc_track_interests_updated', 10, 3 );
 
