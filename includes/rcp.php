@@ -24,15 +24,15 @@ function cgc_track_account_status_change( $new_status, $user_id, $old_status ) {
 
 	if( 'active' == $new_status ) {
 		// do upgrade event
-		cgcSegment::track( 'Account Upgraded', $user_id $properties, $traits );
+		cgcSegment::track( 'Account Upgraded', $user_id, $properties, $traits );
 
 	} elseif ( 'expired' == $new_status ) {
 		// do cancelled event
-		cgcSegment::track( 'Account Expired', $user_id $properties, $traits );
+		cgcSegment::track( 'Account Expired', $user_id, $properties, $traits );
 
 	} elseif ( 'active' == $old_status && 'cancelled' == $new_status ) {
 		// do cancelled event
-		cgcSegment::track( 'Account Cancelled', $user_id $properties, $traits );
+		cgcSegment::track( 'Account Cancelled', $user_id, $properties, $traits );
 
 	}
 
@@ -59,7 +59,7 @@ function cgc_track_subscription_payment( $payment_id, $args ) {
 			'payment_status' => $args['status'],
 			);
 
-	cgcSegment::track( 'Subscription Payment', $user_id $properties, $traits );
+	cgcSegment::track( 'Subscription Payment', $user_id, $properties, $traits );
 
 }
 add_action( 'rcp_insert_payment', 'cgc_track_subscription_payment', 10, 2 );
@@ -78,7 +78,7 @@ function cgc_track_stripe_checkout( $user_id, $subscription ) {
 
 	if ( !empty( $_POST['source'] ) && 'stripe-checkout' == $_POST['source'] ){
 
-		cgcSegment::track( 'Stripe Checkout Signup', $user_id $properties, $traits );
+		cgcSegment::track( 'Stripe Checkout Signup', $user_id, $properties, $traits );
 
 	}
 
