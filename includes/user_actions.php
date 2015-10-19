@@ -222,6 +222,7 @@ function cgc_track_download( $user_id, $post_id, $post_type, $download_name ) {
 		'download' => $download_name,
 		'postType'   => $post_type,
 		'postName'   => $post_name,
+		'postId'   => $post_id,
 		);
 	$traits = array(
 		'userId'   => $user_id,
