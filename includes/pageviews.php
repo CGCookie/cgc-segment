@@ -24,6 +24,7 @@ function cgc_track_pageviews() {
 				expiration: cgc_analytics_vars.expiration,
 				subjects: cgc_analytics_vars.subjects,
 				topics: cgc_analytics_vars.topics,
+				downloadCount: cgc_analytics_vars.downloadCount,
 				betaUser: Boolean( cgc_analytics_vars.betaUser ),
 				group: cgc_analytics_vars.groupName,
 				groupRole: cgc_analytics_vars.groupRole
