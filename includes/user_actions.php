@@ -210,3 +210,26 @@ function cgc_track_interests_updated( $user_id, $main_interests, $sub_interests 
 }
 add_action( 'learning_interests_saved', 'cgc_track_interests_updated', 10, 3 );
 
+
+# Track user downloads
+function cgc_track_download( $user_id, $post_id, $post_type, $download_name ) {
+
+	$post_name = get_the_title( $post_id );
+	$download_count = class_exists('cgcUserAPI') ? cgcUserAPI::get_download_count( $user_id ) : false;
+
+	$properties = array(
+		'userId'   => $user_id,
+		'download' => $download_name,
+		'postType'   => $post_type,
+		'postName'   => $post_name,
+		);
+	$traits = array(
+		'userId'   => $user_id,
+		'downloadCount' => $download_count,
+		);
+
+	cgcSegment::identify_user( $user_id, $traits );
+	cgcSegment::track( 'File Download', $user_id, $properties, $traits );
+}
+add_action( 'cgc_user_download', 'cgc_track_download', 10, 4 );
+
