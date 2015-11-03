@@ -224,6 +224,7 @@ function cgc_track_download( $user_id, $post_id, $post_type, $download_name ) {
 		'postName'   => $post_name,
 		'postId'   => $post_id,
 		);
+
 	$traits = array(
 		'userId'   => $user_id,
 		'downloadCount' => $download_count,
@@ -233,4 +234,32 @@ function cgc_track_download( $user_id, $post_id, $post_type, $download_name ) {
 	cgcSegment::track( 'File Download', $user_id, $properties, $traits );
 }
 add_action( 'cgc_user_download', 'cgc_track_download', 10, 4 );
+
+#Track user progress through Courses and Flows
+function cgc_track_education_progress( $user_id, $new_progress, $lesson_id, $course_id, $flow_id ){
+
+	$lesson_name     = get_the_title( $lesson_id );
+
+	$course_name     = get_the_title( $course_id );
+	$course_progress = cgc_get_course_progress( $course_id );
+
+	$flow_name       = $flow_id ? get_the_title( $flow_id ) : 'null';
+	$flow_progress   = $flow_id ? cgc_get_flow_progress( $flow_id ) : 'null';
+
+	$properties = array(
+		'userId' => $user_id,
+		'flow'   => $flow_name,
+		'course' => $course_name,
+		'lesson' => $lesson_name
+		);
+
+	if( $course_progress > 95 ) {
+		cgcSegment::track( 'Course Completed', $user_id, $properties );
+	}
+
+	if( $flow_progress > 95 ) {
+		cgcSegment::track( 'Flow Completed', $user_id, $properties );
+	}
+}
+add_action('cgc_lesson_progress_updated', 'cgc_track_education_progress', 10, 5 );
 
