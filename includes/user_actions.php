@@ -241,19 +241,21 @@ function cgc_track_education_progress( $user_id, $new_progress, $lesson_id, $cou
 	$lesson_name     = get_the_title( $lesson_id );
 
 	$course_name     = get_the_title( $course_id );
-	$course_progress = cgc_get_course_progress( $course_id );
+	$course_progress = function_exists('cgc_get_course_progress') ? cgc_get_course_progress( $course_id ) : false;
 
 	$flow_name       = $flow_id ? get_the_title( $flow_id ) : 'null';
-	$flow_progress   = $flow_id ? cgc_get_flow_progress( $flow_id ) : 'null';
+	$flow_progress   = $flow_id && function_exists('cgc_get_flow_progress') ? cgc_get_flow_progress( $flow_id ) : 'null';
+
+	$item_exists 	 = function_exists('cgc_activity_get_item') ? cgc_activity_get_item( $user_id, $course_id, 'course_completed' ) : false;
 
 	$properties = array(
 		'userId' => $user_id,
 		'flow'   => $flow_name,
 		'course' => $course_name,
 		'lesson' => $lesson_name
-		);
+	);
 
-	if( $course_progress > 95 ) {
+	if( $course_progress > 95 && false == $item_exists ) {
 		cgcSegment::track( 'Course Completed', $user_id, $properties );
 	}
 
