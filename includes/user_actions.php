@@ -246,7 +246,8 @@ function cgc_track_education_progress( $user_id, $new_progress, $lesson_id, $cou
 	$flow_name       = $flow_id ? get_the_title( $flow_id ) : 'null';
 	$flow_progress   = $flow_id && function_exists('cgc_get_flow_progress') ? cgc_get_flow_progress( $flow_id ) : 'null';
 
-	$item_exists 	 = function_exists('cgc_activity_get_item') ? cgc_activity_get_item( $user_id, $course_id, 'course_completed' ) : false;
+	$course_item_exists 	 = function_exists('cgc_activity_get_item') ? cgc_activity_get_item( $user_id, $course_id, 'course_completed' ) : false;
+	$flow_item_exists 	 = function_exists('cgc_activity_get_item') ? cgc_activity_get_item( $user_id, $flow_id, 'flow_completed' ) : false;
 
 	$properties = array(
 		'userId' => $user_id,
@@ -255,11 +256,11 @@ function cgc_track_education_progress( $user_id, $new_progress, $lesson_id, $cou
 		'lesson' => $lesson_name
 	);
 
-	if( $course_progress > 95 && false == $item_exists ) {
+	if( $course_progress > 95 && false == $course_item_exists ) {
 		cgcSegment::track( 'Course Completed', $user_id, $properties );
 	}
 
-	if( $flow_progress > 95 ) {
+	if( $flow_progress > 95 && false == $flow_item_exists ) {
 		cgcSegment::track( 'Flow Completed', $user_id, $properties );
 	}
 }
