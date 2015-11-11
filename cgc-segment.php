@@ -86,7 +86,7 @@ class cgcSegment {
 			$traits['groupRole'] = $group_role;
 		}
 
-		if( $student_flow ){
+		if( $student_flow ) {
 			$traits['flow']      = $student_flow[0];
 		}
 
