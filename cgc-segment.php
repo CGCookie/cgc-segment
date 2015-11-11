@@ -81,8 +81,8 @@ class cgcSegment {
 			$traits['betaUser']   = cgcUserAPI::is_user_beta_user( $user_id );
 		}
 
-		if( function_exists( 'affwp_is_affiliate' ) ) {
-			$traits['affiliate']  = affwp_is_affiliate( $user_id );
+		if( function_exists( 'affwp_is_active_affiliate' ) ) {
+			$traits['affiliate']  = affwp_is_active_affiliate( $user_id );
 		}
 
 		if( $is_group_member ) {
