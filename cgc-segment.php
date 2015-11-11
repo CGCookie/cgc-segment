@@ -260,6 +260,10 @@ function cgc_segment_load_scripts() {
 
 	}
 
+	if( function_exists( 'affwp_is_active_affiliate' ) ) {
+		$local_vars['affiliate']  = affwp_is_active_affiliate( $user_id );
+	}
+
 	if( function_exists( 'rcp_get_subscription' ) ) {
 		$subscription = rcp_get_subscription( $user_id );
 
