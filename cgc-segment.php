@@ -55,6 +55,7 @@ class cgcSegment {
 		$is_group_member = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->is_group_member( $user_id ) : false;
 		$group_role      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_role( $user_id ) : 'member';
 		$group_name      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_name( $user_id ) : false;
+		$student_flow    = function_exists('cgc_flow_is_student_in_any_flows') ? cgc_flow_is_student_in_any_flows( $user_id ) : '';
 
 		# Check for traits
 		if( empty( $traits ) && is_user_logged_in() ) {
@@ -83,6 +84,10 @@ class cgcSegment {
 		if( $is_group_member ) {
 			$traits['group']     = $group_name;
 			$traits['groupRole'] = $group_role;
+		}
+
+		if( $student_flow ){
+			$traits['flow']      = $student_flow[0];
 		}
 
 		$context = array(
