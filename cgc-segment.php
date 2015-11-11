@@ -4,7 +4,7 @@
  * Description: Sends CGC data to segment.io
  * Author: Jonathan Williamson
  * Author URI: http://cgcookie.com
- * Version: 1.4.1
+ * Version: 1.4.3
  */
 
 $plugin_url = WP_PLUGIN_URL . '/cgc-segment';
