@@ -82,7 +82,7 @@ class cgcSegment {
 		}
 
 		if( function_exists( 'affwp_is_active_affiliate' ) ) {
-			$traits['affiliate']  = affwp_is_active_affiliate( $user_id );
+			$traits['affiliate']  = affwp_is_active_affiliate();
 		}
 
 		if( $is_group_member ) {
@@ -261,7 +261,7 @@ function cgc_segment_load_scripts() {
 	}
 
 	if( function_exists( 'affwp_is_active_affiliate' ) ) {
-		$local_vars['affiliate']  = affwp_is_active_affiliate( $user_id );
+		$local_vars['affiliate']  = affwp_is_active_affiliate();
 	}
 
 	if( function_exists( 'rcp_get_subscription' ) ) {
