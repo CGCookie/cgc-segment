@@ -19,8 +19,10 @@ function cgc_edd_get_product_category( $download_id ){
 
 function cgc_edd_track_add_product_to_cart( $download_id, $options ) {
 
+	$user_id = get_current_user_id();
+
 	$traits = array(
-		"userId" => is_user_logged_in() ? get_current_user_id() : session_id()
+		"userId" => $user_id
 		);
 
 	$properties = array(
@@ -37,8 +39,10 @@ add_action( 'edd_post_add_to_cart', 'cgc_edd_track_add_product_to_cart', 1, 2 );
 
 function cgc_edd_track_remove_product_from_cart( $cart_key ) {
 
+	$user_id = get_current_user_id();
+
 	$traits = array(
-		"userId" => is_user_logged_in() ? get_current_user_id() : session_id()
+		"userId" => $user_id
 		);
 
 	$contents    = edd_get_cart_contents();
@@ -69,7 +73,7 @@ function cgc_edd_track_purchase( $payment_id ) {
 	$user_id  = get_current_user_id();
 
 	$traits = array(
-		"userId"    => is_user_logged_in() ? $user_id : session_id(),
+		"userId"    => $user_id,
 		"firstName" => $userInfo[ 'first_name' ],
 		"lastName"  => $userInfo[ 'last_name' ],
 		"email"     => $userInfo[ 'email' ],
@@ -119,7 +123,7 @@ add_action( 'edd_complete_purchase', 'cgc_edd_track_purchase', 9999, 1 );
 
 function cgc_edd_track_product_downloaded( $download_id, $email ) {
 
-	$user_id = is_user_logged_in() ? get_current_user_id() : $_SERVER['REMOTE_ADDR'];
+	$user_id = get_current_user_id();
 
 	$traits = array(
 		"userId" => $user_id,
