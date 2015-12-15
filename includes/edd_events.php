@@ -19,7 +19,7 @@ function cgc_edd_get_product_category( $download_id ){
 
 function cgc_edd_track_add_product_to_cart( $download_id, $options ) {
 
-	$user_id = get_current_user_id();
+	$user_id = is_user_logged_in() ? get_current_user_id() : session_id();
 
 	$traits = array(
 		"userId" => $user_id
@@ -39,7 +39,7 @@ add_action( 'edd_post_add_to_cart', 'cgc_edd_track_add_product_to_cart', 1, 2 );
 
 function cgc_edd_track_remove_product_from_cart( $cart_key ) {
 
-	$user_id = get_current_user_id();
+	$user_id = is_user_logged_in() ? get_current_user_id() : session_id();
 
 	$traits = array(
 		"userId" => $user_id
