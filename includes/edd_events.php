@@ -70,7 +70,7 @@ add_action( 'edd_pre_remove_from_cart', 'cgc_edd_track_remove_product_from_cart'
 function cgc_edd_track_purchase( $payment_id ) {
 
 	$userInfo = edd_get_payment_meta_user_info( $payment_id);
-	$user_id  = get_current_user_id();
+	$user_id  = is_user_logged_in() ? get_current_user_id() : session_id();
 
 	$traits = array(
 		"userId"    => $user_id,
@@ -123,7 +123,7 @@ add_action( 'edd_complete_purchase', 'cgc_edd_track_purchase', 9999, 1 );
 
 function cgc_edd_track_product_downloaded( $download_id, $email ) {
 
-	$user_id = get_current_user_id();
+	$user_id = is_user_logged_in() ? get_current_user_id() : session_id();
 
 	$traits = array(
 		"userId" => $user_id,
