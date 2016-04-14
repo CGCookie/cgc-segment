@@ -52,7 +52,7 @@ function cgc_track_subscription_payment( $payment_id, $args ) {
 	$properties = array(
 			'level'          => $args['subscription'],
 			'date'           => date("n/j/Y", strtotime( $args['date'] )),
-			'revenue'        => intval( $args['amount'] ),
+			'revenue'        => $args['amount'],
 			'user_id'        => $user_id,
 			'payment_type'   => $args['payment_type'],
 			'transaction_id' => $args['transaction_id'],
