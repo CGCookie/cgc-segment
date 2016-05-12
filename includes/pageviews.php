@@ -19,7 +19,6 @@ function cgc_track_pageviews() {
 				createdAt: cgc_analytics_vars.createdAt,
 				flow: cgc_analytics_vars.flow,
 				userRoles: cgc_analytics_vars.userRoles,
-				type: cgc_analytics_vars.type,
 				status: cgc_analytics_vars.status,
 				level: cgc_analytics_vars.level,
 				expiration: cgc_analytics_vars.expiration,

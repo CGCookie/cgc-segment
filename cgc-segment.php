@@ -73,7 +73,6 @@ class cgcSegment {
 
 		// Global traits for EDU
 		if( function_exists('rcp_is_active') ) {	
-			$traits['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
 			$traits['status']     = ucwords( rcp_get_status( $user_id ) );
 			$traits['level']      = rcp_get_subscription( $user_id );
 			$traits['expiration'] = rcp_get_expiration_date( $user_id );
@@ -145,7 +144,6 @@ class cgcSegment {
 
 		// Global properties for EDU
 		if( function_exists( 'rcp_is_active' ) ) {
-			$properties['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
 			$properties['status']     = ucwords( rcp_get_status( $user_id ) );
 			$properties['level']      = rcp_get_subscription( $user_id );
 			$properties['expiration'] = rcp_get_expiration_date( $user_id );
@@ -272,7 +270,6 @@ function cgc_segment_load_scripts() {
 	if( function_exists( 'rcp_get_subscription' ) ) {
 		$subscription = rcp_get_subscription( $user_id );
 
-		$local_vars['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
 		$local_vars['status']     = ucwords( rcp_get_status( $user_id ) );
 		$local_vars['level']      = $subscription;
 		$local_vars['expiration'] = rcp_get_expiration_date( $user_id );
