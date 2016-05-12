@@ -57,6 +57,7 @@ class cgcSegment {
 		$group_role      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_role( $user_id ) : 'member';
 		$group_name      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_name( $user_id ) : false;
 		$student_flow    = function_exists('cgc_flow_is_student_in_any_flows') ? cgc_flow_is_student_in_any_flows( $user_id ) : '';
+		$student_flow_name = get_the_title( $student_flow[0] );
 
 		# Check for traits
 		if( empty( $traits ) && is_user_logged_in() ) {
@@ -92,7 +93,7 @@ class cgcSegment {
 		}
 
 		if( $student_flow ) {
-			$traits['flow']      = $student_flow[0];
+			$traits['flow']      = $student_flow_name;
 		}
 
 		$context = array(
@@ -233,6 +234,8 @@ function cgc_segment_load_scripts() {
 	$user_id = get_current_user_id();
 	$user    = get_userdata( $user_id );
 
+	$student_flow_id = function_exists('cgc_flow_is_student_in_any_flows') ? cgc_flow_is_student_in_any_flows( $user_id ) : '';
+	$student_flow_name = get_the_title( $student_flow_id[0] );
 	$local_vars = array(
 		'write_key' => $options['cgc_segment_write_key'],
 		);
@@ -247,6 +250,7 @@ function cgc_segment_load_scripts() {
 		$local_vars["username"]  = $user->user_login;
 		$local_vars["createdAt"] = date("n/j/Y", strtotime($registered));
 		$local_vars["userRoles"] = implode( ', ', $user->roles);
+		$local_vars['flow']      = $student_flow_name;
 	}
 
 		# Get user's interests

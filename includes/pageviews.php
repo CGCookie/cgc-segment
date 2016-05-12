@@ -17,6 +17,7 @@ function cgc_track_pageviews() {
 				lastName: cgc_analytics_vars.lastName,
 				email: cgc_analytics_vars.email,
 				createdAt: cgc_analytics_vars.createdAt,
+				flow: cgc_analytics_vars.flow,
 				userRoles: cgc_analytics_vars.userRoles,
 				type: cgc_analytics_vars.type,
 				status: cgc_analytics_vars.status,
