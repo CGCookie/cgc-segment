@@ -258,9 +258,8 @@ function cgc_segment_load_scripts() {
 
 		$local_vars['subjects'] = !empty( $subjects ) ? implode( ', ', $subjects ) : '';
 		$local_vars['topics']   = !empty( $topics ) ? implode( ', ', $topics ) : '';
-		$local_vars['betaUser'] = cgcUserAPI::is_user_beta_user( $user_id );
-		$local_vars['downloadCount'] = cgcUserAPI::get_download_count( $user_id );
-
+		$local_vars['betaUser'] = class_exists('cgcUserAPI') ? cgcUserAPI::is_user_beta_user( $user_id ) : false;
+		$local_vars['downloadCount'] = class_exists('cgcUserAPI') ? cgcUserAPI::get_download_count( $user_id ): 'null';
 	}
 
 	if( function_exists( 'affwp_is_active_affiliate' ) ) {
