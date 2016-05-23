@@ -233,7 +233,7 @@ function cgc_segment_load_scripts() {
 	$user    = get_userdata( $user_id );
 
 	$student_flow_id = function_exists('cgc_flow_is_student_in_any_flows') ? cgc_flow_is_student_in_any_flows( $user_id ) : '';
-	$student_flow_name = get_the_title( $student_flow_id[0] );
+	$student_flow_name = !empty( $student_flow_id ) ? get_the_title( $student_flow_id[0] ) : '';
 	$local_vars = array(
 		'write_key' => $options['cgc_segment_write_key'],
 		);
