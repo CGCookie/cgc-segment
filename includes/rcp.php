@@ -22,7 +22,10 @@ function cgc_track_account_status_change( $new_status, $user_id, $old_status ) {
 		'expiration' => $expiration,
 		);
 
-	if( 'active' == $new_status ) {
+	if( 'Trial' == $subscription && 'active' == $new_status ) {
+		cgcSegment::track( 'Account Trial Activated', $user_id, $properties, $traits );
+
+	} elseif( 'Trial' != $subscription && 'active' == $new_status ) {
 		// do upgrade event
 		cgcSegment::track( 'Account Upgraded', $user_id, $properties, $traits );
 
