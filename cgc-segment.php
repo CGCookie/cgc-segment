@@ -57,6 +57,7 @@ class cgcSegment {
 		$group_name      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_name( $user_id ) : false;
 		$student_flow    = function_exists('cgc_flow_is_student_in_any_flows') ? cgc_flow_is_student_in_any_flows( $user_id ) : '';
 
+
 		# Check for traits
 		if( empty( $traits ) && is_user_logged_in() ) {
 
@@ -71,10 +72,11 @@ class cgcSegment {
 
 		// Global traits for EDU
 		if( function_exists('rcp_is_active') ) {	
-			$traits['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
-			$traits['status']     = ucwords( rcp_get_status( $user_id ) );
-			$traits['level']      = rcp_get_subscription( $user_id );
-			$traits['expiration'] = rcp_get_expiration_date( $user_id );
+			$traits['type']        = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
+			$traits['status']      = ucwords( rcp_get_status( $user_id ) );
+			$traits['level']       = rcp_get_subscription( $user_id );
+			$traits['expiration']  = rcp_get_expiration_date( $user_id );
+			$traits['is_trialing'] = rcp_is_trialing( $user_id );
 		}
 
 		if( class_exists( 'cgcUserAPI') ) {
@@ -147,6 +149,7 @@ class cgcSegment {
 			$properties['status']     = ucwords( rcp_get_status( $user_id ) );
 			$properties['level']      = rcp_get_subscription( $user_id );
 			$properties['expiration'] = rcp_get_expiration_date( $user_id );
+			$properties['is_trialing'] = rcp_is_trialing( $user_id );
 		}
 
 		if( class_exists( 'cgcUserAPI') ) {
@@ -267,10 +270,11 @@ function cgc_segment_load_scripts() {
 	if( function_exists( 'rcp_get_subscription' ) ) {
 		$subscription = rcp_get_subscription( $user_id );
 
-		$local_vars['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
-		$local_vars['status']     = ucwords( rcp_get_status( $user_id ) );
-		$local_vars['level']      = $subscription;
-		$local_vars['expiration'] = rcp_get_expiration_date( $user_id );
+		$local_vars['type']        = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
+		$local_vars['status']      = ucwords( rcp_get_status( $user_id ) );
+		$local_vars['level']       = $subscription;
+		$local_vars['expiration']  = rcp_get_expiration_date( $user_id );
+		$local_vars['is_trialing'] = rcp_is_trialing( $user_id );
 	}
 
 	// Group membership stuff

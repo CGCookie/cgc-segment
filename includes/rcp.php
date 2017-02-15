@@ -7,6 +7,7 @@ function cgc_track_account_status_change( $new_status, $user_id, $old_status ) {
 	$subscription = rcp_get_subscription( $user_id );
 	$expiration   = rcp_get_expiration_date( $user_id );
 	$recurring    = rcp_is_recurring( $user_id ) ? 'Yes' : 'No';
+	$is_trialing  = rcp_is_trialing( $user_id );
 
 	$traits = array(
 		'userId'     => $user_id,
@@ -14,12 +15,14 @@ function cgc_track_account_status_change( $new_status, $user_id, $old_status ) {
 		'level'      => $subscription,
 		'recurring'  => $recurring,
 		'expiration' => $expiration,
+		'is_trialing' => $is_trialing
 		);
 	$properties = array(
 		'status'     => ucwords( $new_status ),
 		'level'      => $subscription,
 		'recurring'  => $recurring,
 		'expiration' => $expiration,
+		'is_trialing' => $is_trialing
 		);
 
 	if( 'active' == $new_status ) {

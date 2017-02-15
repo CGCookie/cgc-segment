@@ -22,6 +22,7 @@ function cgc_track_pageviews() {
 				status: cgc_analytics_vars.status,
 				level: cgc_analytics_vars.level,
 				expiration: cgc_analytics_vars.expiration,
+				is_trialing: Boolean( cgc_analytics_vars.is_trialing ),
 				subjects: cgc_analytics_vars.subjects,
 				topics: cgc_analytics_vars.topics,
 				downloadCount: cgc_analytics_vars.downloadCount,
