@@ -33,7 +33,7 @@ function cgc_track_account_status_change( $new_status, $user_id, $old_status ) {
 		cgcSegment::track( 'Account Upgraded', $user_id, $properties, $traits );
 
 	} elseif ( 'expired' == $new_status ) {
-		// do cancelled event
+		// do expired event
 		cgcSegment::track( 'Account Expired', $user_id, $properties, $traits );
 
 	} elseif ( 'active' == $old_status && 'cancelled' == $new_status ) {

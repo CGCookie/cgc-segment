@@ -4,7 +4,7 @@
  * Description: Sends CGC data to segment.io
  * Author: Jonathan Williamson
  * Author URI: http://cgcookie.com
- * Version: 1.4.9
+ * Version: 1.5.0
  */
 
 $plugin_url = WP_PLUGIN_URL . '/cgc-segment';
@@ -144,13 +144,19 @@ class cgcSegment {
 			$user_id = get_current_user_id();
 		}
 
+		$user_data = get_userdata( $user_id );
+
 		// Global properties for EDU
+		$properties['email']          = $user_data->user_email;
+		$properties['username']       = $user_data->user_login;
+
 		if( function_exists( 'rcp_is_active' ) ) {
 			$properties['status']     = ucwords( rcp_get_status( $user_id ) );
 			$properties['level']      = rcp_get_subscription( $user_id );
 			$properties['expiration'] = rcp_get_expiration_date( $user_id );
 			$properties['is_trialing'] = rcp_is_trialing( $user_id );
 		}
+
 
 		if( class_exists( 'cgcUserAPI') ) {
 			$properties['betaUser']   = cgcUserAPI::is_user_beta_user( $user_id );
