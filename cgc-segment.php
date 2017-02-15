@@ -4,7 +4,7 @@
  * Description: Sends CGC data to segment.io
  * Author: Jonathan Williamson
  * Author URI: http://cgcookie.com
- * Version: 1.4.7
+ * Version: 1.4.9
  */
 
 $plugin_url = WP_PLUGIN_URL . '/cgc-segment';
@@ -35,6 +35,7 @@ class cgcSegment {
 		require_once dirname( __FILE__ ) . "/includes/user_actions.php";
 		require_once dirname( __FILE__ ) . "/includes/user_login.php";
 		require_once dirname( __FILE__ ) . "/includes/user_registration.php";
+		require_once dirname( __FILE__ ) . "/includes/user_tour.php";
 		require_once dirname( __FILE__ ) . "/includes/optimizely_js.php";
 
 		# Setup our Segment tracking and
@@ -56,6 +57,7 @@ class cgcSegment {
 		$group_role      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_role( $user_id ) : 'member';
 		$group_name      = function_exists('cgc_group_accounts') ? cgc_group_accounts()->members->get_group_name( $user_id ) : false;
 		$student_flow    = function_exists('cgc_flow_is_student_in_any_flows') ? cgc_flow_is_student_in_any_flows( $user_id ) : '';
+		$student_flow_name = get_the_title( $student_flow[0] );
 
 
 		# Check for traits
@@ -72,7 +74,6 @@ class cgcSegment {
 
 		// Global traits for EDU
 		if( function_exists('rcp_is_active') ) {	
-			$traits['type']        = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
 			$traits['status']      = ucwords( rcp_get_status( $user_id ) );
 			$traits['level']       = rcp_get_subscription( $user_id );
 			$traits['expiration']  = rcp_get_expiration_date( $user_id );
@@ -93,7 +94,7 @@ class cgcSegment {
 		}
 
 		if( $student_flow ) {
-			$traits['flow']      = $student_flow[0];
+			$traits['flow']      = $student_flow_name;
 		}
 
 		$context = array(
@@ -145,7 +146,6 @@ class cgcSegment {
 
 		// Global properties for EDU
 		if( function_exists( 'rcp_is_active' ) ) {
-			$properties['type']       = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
 			$properties['status']     = ucwords( rcp_get_status( $user_id ) );
 			$properties['level']      = rcp_get_subscription( $user_id );
 			$properties['expiration'] = rcp_get_expiration_date( $user_id );
@@ -235,6 +235,8 @@ function cgc_segment_load_scripts() {
 	$user_id = get_current_user_id();
 	$user    = get_userdata( $user_id );
 
+	$student_flow_id = function_exists('cgc_flow_is_student_in_any_flows') ? cgc_flow_is_student_in_any_flows( $user_id ) : '';
+	$student_flow_name = !empty( $student_flow_id ) ? get_the_title( $student_flow_id[0] ) : '';
 	$local_vars = array(
 		'write_key' => $options['cgc_segment_write_key'],
 		);
@@ -249,6 +251,7 @@ function cgc_segment_load_scripts() {
 		$local_vars["username"]  = $user->user_login;
 		$local_vars["createdAt"] = date("n/j/Y", strtotime($registered));
 		$local_vars["userRoles"] = implode( ', ', $user->roles);
+		$local_vars['flow']      = $student_flow_name;
 	}
 
 		# Get user's interests
@@ -258,9 +261,8 @@ function cgc_segment_load_scripts() {
 
 		$local_vars['subjects'] = !empty( $subjects ) ? implode( ', ', $subjects ) : '';
 		$local_vars['topics']   = !empty( $topics ) ? implode( ', ', $topics ) : '';
-		$local_vars['betaUser'] = cgcUserAPI::is_user_beta_user( $user_id );
-		$local_vars['downloadCount'] = cgcUserAPI::get_download_count( $user_id );
-
+		$local_vars['betaUser'] = class_exists('cgcUserAPI') ? cgcUserAPI::is_user_beta_user( $user_id ) : false;
+		$local_vars['downloadCount'] = class_exists('cgcUserAPI') ? cgcUserAPI::get_download_count( $user_id ): 'null';
 	}
 
 	if( function_exists( 'affwp_is_active_affiliate' ) ) {
@@ -270,7 +272,6 @@ function cgc_segment_load_scripts() {
 	if( function_exists( 'rcp_get_subscription' ) ) {
 		$subscription = rcp_get_subscription( $user_id );
 
-		$local_vars['type']        = rcp_is_active( $user_id ) ? 'Citizen' : 'Basic';
 		$local_vars['status']      = ucwords( rcp_get_status( $user_id ) );
 		$local_vars['level']       = $subscription;
 		$local_vars['expiration']  = rcp_get_expiration_date( $user_id );

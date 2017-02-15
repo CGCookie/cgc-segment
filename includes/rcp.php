@@ -25,7 +25,10 @@ function cgc_track_account_status_change( $new_status, $user_id, $old_status ) {
 		'is_trialing' => $is_trialing
 		);
 
-	if( 'active' == $new_status ) {
+	if( 'Trial' == $subscription && 'active' == $new_status ) {
+		cgcSegment::track( 'Account Trial Activated', $user_id, $properties, $traits );
+
+	} elseif( 'Trial' != $subscription && 'active' == $new_status ) {
 		// do upgrade event
 		cgcSegment::track( 'Account Upgraded', $user_id, $properties, $traits );
 
@@ -55,7 +58,7 @@ function cgc_track_subscription_payment( $payment_id, $args ) {
 	$properties = array(
 			'level'          => $args['subscription'],
 			'date'           => date("n/j/Y", strtotime( $args['date'] )),
-			'revenue'        => intval( $args['amount'] ),
+			'revenue'        => $args['amount'],
 			'user_id'        => $user_id,
 			'payment_type'   => $args['payment_type'],
 			'transaction_id' => $args['transaction_id'],

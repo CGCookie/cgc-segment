@@ -266,3 +266,24 @@ function cgc_track_education_progress( $user_id, $new_progress, $lesson_id, $cou
 }
 add_action('cgc_lesson_progress_updated', 'cgc_track_education_progress', 10, 5 );
 
+/**
+* Track Love Sharing
+*
+*	@since 1.4.9
+*/
+function cgc_track_love_share( $sender_id, $recipient_id ) {
+
+	$properties = array(
+		'userId' => $sender_id,
+		'recipient'  => $recipient_id,
+		);
+
+	$traits = array(
+		'userId' => $sender_id,
+		'recipient'  => $recipient_id,
+		);
+
+	cgcSegment::track( 'Love Shared', $sender_id, $properties, $traits );
+
+}
+add_action( 'cgc_share_love_sent', 'cgc_track_love_share', 10, 2 );
